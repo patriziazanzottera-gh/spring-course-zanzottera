@@ -3,7 +3,7 @@ package com.example.spring_course.service.dto;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class UserRequestDTO {
 
     private String nome;
     private String email;

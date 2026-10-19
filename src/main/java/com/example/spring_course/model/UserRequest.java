@@ -5,9 +5,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-@NotBlank
 public class UserRequest {
 
+    @NotBlank
     private String nome;
     private String email;
     @Pattern(regexp = "([A-Z]{2})")
