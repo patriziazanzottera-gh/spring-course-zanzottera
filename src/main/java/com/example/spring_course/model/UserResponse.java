@@ -13,11 +13,11 @@ public class UserResponse {
     private String email;
     private String message;
 
-    public UserResponse(String message,  String oid) {
+    public UserResponse(String message,  String oid, UserRequestDTO user) {
         this.message = message;
         this.userId = oid;
-        //this.nome = user.getNome();
-       // this.email = user.getEmail();
+        this.nome = user.getNome();
+        this.email = user.getEmail();
     }
 
     public UserResponse(String message) {

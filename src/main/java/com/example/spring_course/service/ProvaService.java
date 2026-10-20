@@ -14,7 +14,7 @@ public class ProvaService {
 
     public ResponseEntity<UserResponse> createUser(UserRequestDTO user) {
         UUID oid = UUID.randomUUID();
-        UserResponse userResponse = new UserResponse("User creato con successo " + oid, oid.toString());
+        UserResponse userResponse = new UserResponse("User creato con successo " + oid, oid.toString(), user);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 }

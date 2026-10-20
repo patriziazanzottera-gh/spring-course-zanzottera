@@ -45,8 +45,7 @@ public class ProvaController{
 
     @GetMapping("/usersInGet")
     public ResponseEntity<UserResponse> createUserInGet(@Valid @RequestBody UserRequest user){
-        UUID oid = UUID.randomUUID();
-        UserResponse userResponse = new UserResponse("User creato con successo in get " + oid, oid.toString());
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+        UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
+        return service.createUser(requestDTO);
     }
 }
