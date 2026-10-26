@@ -2,7 +2,7 @@ package com.example.spring_course.controller;
 
 import com.example.spring_course.model.UserRequest;
 import com.example.spring_course.model.UserResponse;
-import com.example.spring_course.service.ProvaService;
+import com.example.spring_course.service.UserService;
 import com.example.spring_course.service.dto.UserRequestDTO;
 import com.example.spring_course.service.mapper.MapperUserDTO;
 import jakarta.validation.Valid;
@@ -11,15 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
-public class ProvaController{
+public class UserController {
 
     private final MapperUserDTO mapperUserDTO;
-    private final ProvaService service;
+    private final UserService service;
 
     @GetMapping("/hello")
     public String hello(){
@@ -28,19 +26,25 @@ public class ProvaController{
 
     @GetMapping("/byName/{nome}")
     public ResponseEntity<UserResponse> getUserByName(@PathVariable("nome") String nome) {
-        UserResponse userResponse = null;
-        if (nome == null || nome.isBlank()) {
-            userResponse = new UserResponse("Il Parametro 'nome' deve essere valorizzato ");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userResponse);
-        }
-        userResponse = new UserResponse("Parametro valorizzato");
-        return ResponseEntity.status(HttpStatus.OK).body(userResponse);
+        return service.getByName(nome);
     }
 
-    @PostMapping("/users")
+    @GetMapping("/byNameNative/{nome}")
+    public ResponseEntity<UserResponse> getUserByEmail(@PathVariable("nome") String nome) {
+
+        return service.getByNameNative(nome);
+    }
+
+    @PostMapping("/createUser")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest user) {
         UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
         return service.createUser(requestDTO);
+    }
+
+    @PostMapping("/updateUser")
+    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest user) {
+        UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
+        return service.updateUser(requestDTO);
     }
 
     @GetMapping("/usersInGet")
