@@ -1,11 +1,13 @@
 package com.example.spring_course.service;
 
+import com.example.spring_course.exception.AppException;
 import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.repository.UsersRepository;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.dto.UserRequestDTO;
 import com.example.spring_course.service.mapper.MapperUserDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -38,6 +41,7 @@ public class UserService {
             usersRepository.save(userEntity);
             userResponse = new UserResponse("User creato con successo " + oid, oid.toString(), userDto);
         } else {
+            log.error("User già esistente");
             userResponse = new UserResponse("User già esistente");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
@@ -70,6 +74,15 @@ public class UserService {
         } else {
             userResponse = new UserResponse("Utente trovato " + userEntities.getFirst().getId());
         }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+    }
+
+    public ResponseEntity<UserResponse> getById(Long oid) {
+
+        UserEntity entity = usersRepository.findById(oid).orElseThrow(()->new AppException("User " + oid + " non trovato ", HttpStatus.NOT_FOUND));
+        UserResponse userResponse = new UserResponse("Utente trovato " + entity.getId());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
