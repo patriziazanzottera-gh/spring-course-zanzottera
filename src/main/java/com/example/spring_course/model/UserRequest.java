@@ -1,5 +1,6 @@
 package com.example.spring_course.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -7,11 +8,13 @@ import lombok.Data;
 public class UserRequest {
 
     @NotBlank
+    @Schema(description = "Nome dell'utente", example = "Barbagianni")
     private String nome;
     @Email(message = "L'email deve rispettare il formato che tutti sanno")
     @NotBlank(message="Email obbligatoria")
     private String email;
     @Pattern(regexp = "([A-Z]{2})")
+    @Schema(description = "Città di residenza dell'utente", example = "MI")
     private String citta;
     @Pattern(regexp = "([A-Z]{2})")
     private String nazione;
