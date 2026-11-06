@@ -1,6 +1,7 @@
 package com.example.spring_course.service;
 
 import com.example.spring_course.exception.AppException;
+import com.example.spring_course.model.UserRequest;
 import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.repository.UsersRepository;
 import com.example.spring_course.repository.model.UserEntity;
@@ -23,23 +24,15 @@ public class UserService {
 
     private final UsersRepository usersRepository;
     private final MapperUserDTO mapperUserDTO;
-
-    public ResponseEntity<UserResponse> geUserResponse(UserRequestDTO user) {
-        UUID oid = UUID.randomUUID();
-        UserResponse userResponse = new UserResponse("User creato con successo " + oid, oid.toString(), user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
-    }
-
-    public ResponseEntity<UserResponse> createUser(UserRequestDTO userDto) {
+    public ResponseEntity<UserResponse> createUser(UserRequestDTO requestDTO) {
         UUID oid = UUID.randomUUID();
         UserResponse userResponse = null;
-
-        Optional<UserEntity> optionalUserEntity = usersRepository.findByEmail(userDto.getEmail());
+        Optional<UserEntity> optionalUserEntity = usersRepository.findByEmail(requestDTO.getEmail());
 
         if (optionalUserEntity.isEmpty()) {
-            UserEntity userEntity = mapperUserDTO.dtoToEntity(userDto);
+            UserEntity userEntity = mapperUserDTO.dtoToEntity(requestDTO);
             usersRepository.save(userEntity);
-            userResponse = new UserResponse("User creato con successo " + oid, oid.toString(), userDto);
+            userResponse = mapperUserDTO.fromDtoToResponse(requestDTO);
         } else {
             log.error("User già esistente");
             userResponse = new UserResponse("User già esistente");
@@ -59,7 +52,7 @@ public class UserService {
             optionalUserEntity.get().setEta(userDto.getEta());
             optionalUserEntity.get().setEmail(userDto.getEmail());
             usersRepository.save(optionalUserEntity.get());
-            userResponse = new UserResponse("User aggiornato con successo " + oid, oid.toString(), userDto);
+            userResponse = mapperUserDTO.fromDtoToResponse(userDto);
         } else {
             userResponse = new UserResponse("User non esistente");
         }
@@ -93,7 +86,6 @@ public class UserService {
             userResponse = new UserResponse("Nessuno user trovato");
         } else {
             userResponse = new UserResponse("Utente trovato " + userEntities.getFirst().getId());
-
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
