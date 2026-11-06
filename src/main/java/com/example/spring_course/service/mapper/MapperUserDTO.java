@@ -1,6 +1,7 @@
 package com.example.spring_course.service.mapper;
 
 import com.example.spring_course.model.UserRequest;
+import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.dto.UserRequestDTO;
 import org.hibernate.mapping.UserDefinedType;
@@ -32,5 +33,14 @@ public abstract class MapperUserDTO {
         userEntity.setEta(userDto.getEta());
 
         return userEntity;
+    }
+
+    public UserResponse fromDtoToResponse(UserRequestDTO userRequestDTO) {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setEmail(userRequestDTO.getEmail());
+        userResponse.setIndirizzo(userRequestDTO.getIndirizzo());
+        userResponse.setNome(userRequestDTO.getNome());
+        userResponse.setEta(userRequestDTO.getEta());
+        return userResponse;
     }
 }

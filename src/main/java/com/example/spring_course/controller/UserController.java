@@ -57,8 +57,8 @@ public class UserController {
     @ApiResponse(responseCode = "200"
             , description = "Utente creato correttamente"
             , content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON_VALUE
-                    , examples = @ExampleObject ("""
+            mediaType = MediaType.APPLICATION_JSON_VALUE
+            , examples = @ExampleObject ("""
                         {
                               "email": "pat.zan2@gmaioo.com",
                               "message": "User creato con successo e9c0c4c9-22d9-4d81-870f-8d4ebfb26d38",
@@ -66,12 +66,12 @@ public class UserController {
                               "userId": "e9c0c4c9-22d9-4d81-870f-8d4ebfb26d38"
                         }
                     """)
-                    , schema =  @Schema(implementation = UserResponse.class)
+            , schema =  @Schema(implementation = UserResponse.class)
     ))
     @PostMapping("/createUser")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest user) {
         UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return  ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(requestDTO));
+        return service.createUser(requestDTO);
     }
 
     @PostMapping("/updateUser")
@@ -83,6 +83,6 @@ public class UserController {
     @GetMapping("/usersInGet")
     public ResponseEntity<UserResponse> createUserInGet(@Valid @RequestBody UserRequest user){
         UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return  ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(requestDTO));
+        return service.createUser(requestDTO);
     }
 }
