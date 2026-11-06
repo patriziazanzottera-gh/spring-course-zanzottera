@@ -71,7 +71,7 @@ public class UserController {
     @PostMapping("/createUser")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest user) {
         UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return service.createUser(requestDTO);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(requestDTO));
     }
 
     @PostMapping("/updateUser")
@@ -83,6 +83,6 @@ public class UserController {
     @GetMapping("/usersInGet")
     public ResponseEntity<UserResponse> createUserInGet(@Valid @RequestBody UserRequest user){
         UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return service.createUser(requestDTO);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(requestDTO));
     }
 }

@@ -26,25 +26,26 @@ public class UserService {
 
     public ResponseEntity<UserResponse> geUserResponse(UserRequestDTO user) {
         UUID oid = UUID.randomUUID();
-        UserResponse userResponse = new UserResponse("User creato con successo " + oid, oid.toString(), user);
+        UserResponse userResponse = new UserResponse("User creato con successo " + oid, Long.valueOf(oid.toString()), user);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
-    public ResponseEntity<UserResponse> createUser(UserRequestDTO userDto) {
-        UUID oid = UUID.randomUUID();
+    public UserResponse createUser(UserRequestDTO userDto) {
+        //UUID oid = UUID.randomUUID();
+
         UserResponse userResponse = null;
 
         Optional<UserEntity> optionalUserEntity = usersRepository.findByEmail(userDto.getEmail());
 
         if (optionalUserEntity.isEmpty()) {
             UserEntity userEntity = mapperUserDTO.dtoToEntity(userDto);
-            usersRepository.save(userEntity);
-            userResponse = new UserResponse("User creato con successo " + oid, oid.toString(), userDto);
+            userEntity = usersRepository.save(userEntity);
+            userResponse = new UserResponse("User creato con successo ");
         } else {
             log.error("User già esistente");
-            userResponse = new UserResponse("User già esistente");
+            userResponse = new UserResponse(optionalUserEntity.get().getId());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+        return userResponse;
     }
 
     public ResponseEntity<UserResponse> updateUser(UserRequestDTO userDto) {
@@ -59,7 +60,7 @@ public class UserService {
             optionalUserEntity.get().setEta(userDto.getEta());
             optionalUserEntity.get().setEmail(userDto.getEmail());
             usersRepository.save(optionalUserEntity.get());
-            userResponse = new UserResponse("User aggiornato con successo " + oid, oid.toString(), userDto);
+            userResponse = new UserResponse("User aggiornato con successo " + oid, Long.valueOf(oid.toString()), userDto);
         } else {
             userResponse = new UserResponse("User non esistente");
         }

@@ -8,12 +8,12 @@ import lombok.Data;
 @NotBlank
 public class UserResponse {
 
-    private String userId;
+    private Long userId;
     private String nome;
     private String email;
     private String message;
 
-    public UserResponse(String message,  String oid, UserRequestDTO user) {
+    public UserResponse(String message,  Long oid, UserRequestDTO user) {
         this.message = message;
         this.userId = oid;
         this.nome = user.getNome();
@@ -22,5 +22,9 @@ public class UserResponse {
 
     public UserResponse(String message) {
         this.message = message;
+    }
+
+    public UserResponse(Long oid) {
+        this.userId = oid;
     }
 }
