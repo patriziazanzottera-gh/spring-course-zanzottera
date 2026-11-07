@@ -7,13 +7,12 @@ import java.math.BigDecimal;
 
 @Entity
 @Data
-@Table(name="Order")
+@Table(name="orders")
 public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private BigDecimal total;
 
     @ManyToOne(fetch=FetchType.LAZY)
