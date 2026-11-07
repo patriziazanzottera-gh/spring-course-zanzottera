@@ -68,21 +68,14 @@ public class UserController {
                     """)
             , schema =  @Schema(implementation = UserResponse.class)
     ))
+
     @PostMapping("/createUser")
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest user) {
-        UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return service.createUser(requestDTO);
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
+        return service.createUser(mapperUserDTO.toRequestDTO(userRequest));
     }
 
     @PostMapping("/updateUser")
-    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest user) {
-        UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return service.updateUser(requestDTO);
-    }
-
-    @GetMapping("/usersInGet")
-    public ResponseEntity<UserResponse> createUserInGet(@Valid @RequestBody UserRequest user){
-        UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return service.createUser(requestDTO);
+    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest userRequest) {
+        return service.updateUser(mapperUserDTO.toRequestDTO(userRequest));
     }
 }
