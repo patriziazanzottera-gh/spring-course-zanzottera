@@ -66,7 +66,6 @@ public class UserController {
                     , schema =  @Schema(implementation = UserResponse.class)
     ))
 
-
     @PostMapping("/createUser")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
         return service.createUser(mapperUserDTO.toRequestDTO(userRequest));
