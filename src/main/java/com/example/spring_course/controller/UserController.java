@@ -13,10 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +47,6 @@ public class UserController {
 
     @GetMapping("/byNameNative/{nome}")
     public ResponseEntity<UserResponse> getUserByEmail(@PathVariable("nome") String nome) {
-
         return service.getByNameNative(nome);
     }
 
@@ -68,21 +65,15 @@ public class UserController {
                     """)
                     , schema =  @Schema(implementation = UserResponse.class)
     ))
+
+
     @PostMapping("/createUser")
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest user) {
-        UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return service.createUser(requestDTO);
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
+        return service.createUser(mapperUserDTO.toRequestDTO(userRequest));
     }
 
     @PostMapping("/updateUser")
-    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest user) {
-        UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return service.updateUser(requestDTO);
-    }
-
-    @GetMapping("/usersInGet")
-    public ResponseEntity<UserResponse> createUserInGet(@Valid @RequestBody UserRequest user){
-        UserRequestDTO requestDTO = mapperUserDTO.toRequestDTO(user);
-        return service.createUser(requestDTO);
+    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest userRequest) {
+        return service.updateUser(mapperUserDTO.toRequestDTO(userRequest));
     }
 }
