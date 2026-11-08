@@ -4,6 +4,7 @@ import com.example.spring_course.model.UserRequest;
 import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.service.UserService;
 import com.example.spring_course.service.dto.UserRequestDTO;
+import com.example.spring_course.service.dto.UserResponseDTO;
 import com.example.spring_course.service.mapper.MapperUserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,25 +39,36 @@ public class UserController {
 
     @GetMapping("/byName/{nome}")
     public ResponseEntity<UserResponse> getUserByName(@PathVariable("nome") String nome) {
-        return service.getByName(nome);
+        UserResponseDTO userResponseDTO = service.getByName(nome);
+        UserResponse userResponse = mapperUserDTO.dtoToResponse(userResponseDTO);
+
+        return ResponseEntity.status(userResponse.getStatus()).body(userResponse);
     }
 
     @GetMapping("/byId/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable("id") Long id) {
-        return service.getById(id);
+        UserResponseDTO userResponseDTO = service.getById(id);
+        UserResponse userResponse = mapperUserDTO.dtoToResponse(userResponseDTO);
+
+        return ResponseEntity.status(userResponse.getStatus()).body(userResponse);
     }
 
     @GetMapping("/byNameNative/{nome}")
     public ResponseEntity<UserResponse> getUserByEmail(@PathVariable("nome") String nome) {
-        return service.getByNameNative(nome);
+
+        UserResponseDTO userResponseDTO = service.getByNameNative(nome);
+        UserResponse userResponse = mapperUserDTO.dtoToResponse(userResponseDTO);
+
+        return ResponseEntity.status(userResponse.getStatus()).body(userResponse);
+
     }
 
     @Operation(summary = "crea un nuovo utente")
     @ApiResponse(responseCode = "200"
             , description = "Utente creato correttamente"
             , content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON_VALUE
-                    , examples = @ExampleObject ("""
+            mediaType = MediaType.APPLICATION_JSON_VALUE
+            , examples = @ExampleObject ("""
                         {
                               "email": "pat.zan2@gmaioo.com",
                               "message": "User creato con successo e9c0c4c9-22d9-4d81-870f-8d4ebfb26d38",
@@ -63,17 +76,23 @@ public class UserController {
                               "userId": "e9c0c4c9-22d9-4d81-870f-8d4ebfb26d38"
                         }
                     """)
-                    , schema =  @Schema(implementation = UserResponse.class)
+            , schema =  @Schema(implementation = UserResponse.class)
     ))
 
 
     @PostMapping("/createUser")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
-        return service.createUser(mapperUserDTO.toRequestDTO(userRequest));
+        UserResponseDTO userResponseDTO = service.createUser(mapperUserDTO.toRequestDTO(userRequest));
+        UserResponse userResponse = mapperUserDTO.dtoToResponse(userResponseDTO);
+
+        return ResponseEntity.status(userResponse.getStatus()).body(userResponse);
     }
 
     @PostMapping("/updateUser")
     public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest userRequest) {
-        return service.updateUser(mapperUserDTO.toRequestDTO(userRequest));
+        UserResponseDTO userResponseDTO = service.updateUser(mapperUserDTO.toRequestDTO(userRequest));
+        UserResponse userResponse = mapperUserDTO.dtoToResponse(userResponseDTO);
+
+        return ResponseEntity.status(userResponse.getStatus()).body(userResponse);
     }
 }
