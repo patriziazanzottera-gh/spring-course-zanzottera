@@ -26,7 +26,9 @@ public class UserResponse {
         this.userId = oid;
         this.nome = user.getNome();
         this.email = user.getEmail();
+        this.indirizzo = user.getIndirizzo();
         this.status = status;
+
     }
 
     public UserResponse(String message) {

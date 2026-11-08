@@ -11,13 +11,11 @@ import java.util.Optional;
 
 public interface UsersRepository extends JpaRepository<UserEntity, Long> {
 
-    public
-
-    Optional<UserEntity> findByEmail(String email);
+    public Optional<UserEntity> findByEmail(String email);
 
     @Query("SELECT u FROM UserEntity u WHERE u.nome = :name")
-    List<UserEntity> searchByName(@Param("name")String name);
+    List<UserEntity> searchByName(@Param("name") String name);
 
     @Query(value = "SELECT * FROM Users WHERE NOME = :name", nativeQuery = true)
-    List<UserEntity> searchByNameNative(@Param("name")String name);
+    List<UserEntity> searchByNameNative(@Param("name") String name);
 }

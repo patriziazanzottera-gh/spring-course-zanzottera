@@ -16,12 +16,6 @@ public abstract class MapperUserDTO {
     @Mapping(target = "indirizzo", expression = "java(mapIndirizzo(userRequest.getCitta(), userRequest.getNazione()))")
     public abstract UserRequestDTO toRequestDTO (UserRequest userRequest);
 
-    public UserEntity map(UserRequestDTO userDTO) {
-        UserEntity userEntity = new UserEntity();
-
-        return userEntity;
-    }
-
     public String mapIndirizzo(String citta, String nazione) {
         return citta.concat( " - " ).concat(nazione);
     }
@@ -32,7 +26,6 @@ public abstract class MapperUserDTO {
         userEntity.setIndirizzo(userDto.getIndirizzo());
         userEntity.setNome(userDto.getNome());
         userEntity.setEta(userDto.getEta());
-
         return userEntity;
     }
 

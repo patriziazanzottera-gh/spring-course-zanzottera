@@ -8,9 +8,7 @@ import com.example.spring_course.service.dto.UserRequestDTO;
 import com.example.spring_course.service.dto.UserResponseDTO;
 import com.example.spring_course.service.mapper.MapperUserDTO;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,24 +28,38 @@ public class UserService {
         return mapperUserDTO.responseToDTO(userResponse);
     }
 
-    public UserResponseDTO createUser(UserRequestDTO userDto) {
-        UUID oid = UUID.randomUUID();
-        UserResponse userResponse = null;
+    public UserResponseDTO createUser_old(UserRequestDTO userDto) {
 
+        UserResponse userResponse = null;
         Optional<UserEntity> optionalUserEntity = usersRepository.findByEmail(userDto.getEmail());
 
         if (optionalUserEntity.isEmpty()) {
             UserEntity userEntity = mapperUserDTO.dtoToEntity(userDto);
             usersRepository.save(userEntity);
-            userResponse = new UserResponse("User creato con successo " + oid, oid.toString(), userDto, HttpStatus.OK);
+            userResponse = new UserResponse("User creato con successo " + userEntity.getId(), userEntity.getId().toString(), userDto, HttpStatus.OK);
         } else {
             userResponse = new UserResponse("User già esistente", HttpStatus.FOUND);
         }
         return mapperUserDTO.responseToDTO(userResponse);
     }
 
-    public UserResponseDTO updateUser(UserRequestDTO userDto) {
-        UUID oid = UUID.randomUUID();
+    public UserResponseDTO createUser(UserRequestDTO userDto) {
+        usersRepository.findByEmail(userDto.getEmail()).ifPresent(user -> {
+            throw new AppException(
+                    "User " + userDto.getEmail() + " già presente",
+                    HttpStatus.CONFLICT
+            );
+        });
+
+        UserEntity userEntity = mapperUserDTO.dtoToEntity(userDto);
+        usersRepository.save(userEntity);
+        UserResponse userResponse = new UserResponse("User creato", userEntity.getId().toString(), userDto, HttpStatus.OK);
+
+        return mapperUserDTO.responseToDTO(userResponse);
+    }
+
+    public UserResponseDTO updateUser_old(UserRequestDTO userDto) {
+
         UserResponse userResponse = null;
 
         Optional<UserEntity> optionalUserEntity = usersRepository.findByEmail(userDto.getEmail());
@@ -58,10 +70,39 @@ public class UserService {
             optionalUserEntity.get().setEta(userDto.getEta());
             optionalUserEntity.get().setEmail(userDto.getEmail());
             usersRepository.save(optionalUserEntity.get());
-            userResponse = new UserResponse("User aggiornato con successo " + oid, oid.toString(), userDto, HttpStatus.OK);
+            userResponse = new UserResponse("User aggiornato con successo " + optionalUserEntity.get().getId(), optionalUserEntity.get().getId().toString(), userDto, HttpStatus.OK);
         } else {
             userResponse = new UserResponse("User non esistente", HttpStatus.NOT_FOUND);
         }
+        return mapperUserDTO.responseToDTO(userResponse);
+    }
+
+    public UserResponseDTO updateUser(UserRequestDTO userDto) {
+
+        UserEntity userEntity = usersRepository.findByEmail(userDto.getEmail()).orElseThrow(()->new AppException("User " + userDto.getEmail() + " non trovato ", HttpStatus.NOT_FOUND));
+
+        userEntity.setIndirizzo(userDto.getIndirizzo());
+        userEntity.setNome(userDto.getNome());
+        userEntity.setEta(userDto.getEta());
+        userEntity.setEmail(userDto.getEmail());
+        usersRepository.save(userEntity);
+        UserResponse userResponse = new UserResponse("User aggiornato con successo " + userEntity.getId(), userEntity.getId().toString(), userDto, HttpStatus.OK);
+
+        return mapperUserDTO.responseToDTO(userResponse);
+    }
+
+    public UserResponseDTO getByName_old(String name) {
+        UserResponse userResponse = null;
+        List<UserEntity> userEntities = usersRepository.searchByName(name);
+        if (userEntities == null || userEntities.isEmpty()) {
+            userResponse = new UserResponse("Nessuno user trovato", HttpStatus.NOT_FOUND);
+        } else {
+            UserEntity userEntity = userEntities.getFirst();
+            userResponse = mapperUserDTO.entityToResponse(userEntity);
+            userResponse.setMessage("Utente trovato " + userEntity.getId());
+            userResponse.setStatus(HttpStatus.OK);
+        }
+
         return mapperUserDTO.responseToDTO(userResponse);
     }
 
@@ -69,7 +110,7 @@ public class UserService {
         UserResponse userResponse = null;
         List<UserEntity> userEntities = usersRepository.searchByName(name);
         if (userEntities == null || userEntities.isEmpty()) {
-            userResponse = new UserResponse("Nessuno user trovato", HttpStatus.NOT_FOUND);
+           throw new AppException("User " + name + " non trovato ", HttpStatus.NOT_FOUND);
         } else {
             UserEntity userEntity = userEntities.getFirst();
             userResponse = mapperUserDTO.entityToResponse(userEntity);
