@@ -1,11 +1,11 @@
 package com.example.spring_course.service;
 
 import com.example.spring_course.exception.AppException;
-import com.example.spring_course.model.UserRequest;
 import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.repository.UsersRepository;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.dto.UserRequestDTO;
+import com.example.spring_course.service.dto.UserResponseDTO;
 import com.example.spring_course.service.mapper.MapperUserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,30 +17,36 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UsersRepository usersRepository;
     private final MapperUserDTO mapperUserDTO;
-    public ResponseEntity<UserResponse> createUser(UserRequestDTO requestDTO) {
-        UUID oid = UUID.randomUUID();
-        UserResponse userResponse = null;
-        Optional<UserEntity> optionalUserEntity = usersRepository.findByEmail(requestDTO.getEmail());
 
-        if (optionalUserEntity.isEmpty()) {
-            UserEntity userEntity = mapperUserDTO.dtoToEntity(requestDTO);
-            usersRepository.save(userEntity);
-            userResponse = mapperUserDTO.fromDtoToResponse(requestDTO);
-        } else {
-            log.error("User già esistente");
-            userResponse = new UserResponse("User già esistente");
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+    public UserResponseDTO getUserResponse(UserRequestDTO user) {
+        UUID oid = UUID.randomUUID();
+        UserResponse userResponse = new UserResponse("User restituito con successo " + oid, oid.toString(), user, HttpStatus.OK);
+        return mapperUserDTO.responseToDTO(userResponse);
     }
 
-    public ResponseEntity<UserResponse> updateUser(UserRequestDTO userDto) {
+    public UserResponseDTO createUser(UserRequestDTO userDto) {
+        UUID oid = UUID.randomUUID();
+        UserResponse userResponse = null;
+
+        Optional<UserEntity> optionalUserEntity = usersRepository.findByEmail(userDto.getEmail());
+
+        if (optionalUserEntity.isEmpty()) {
+            UserEntity userEntity = mapperUserDTO.dtoToEntity(userDto);
+            usersRepository.save(userEntity);
+            userResponse = new UserResponse("User creato con successo " + oid, oid.toString(), userDto, HttpStatus.OK);
+        } else {
+            userResponse = new UserResponse("User già esistente", HttpStatus.FOUND);
+        }
+        return mapperUserDTO.responseToDTO(userResponse);
+    }
+
+    public UserResponseDTO updateUser(UserRequestDTO userDto) {
         UUID oid = UUID.randomUUID();
         UserResponse userResponse = null;
 
@@ -52,41 +58,48 @@ public class UserService {
             optionalUserEntity.get().setEta(userDto.getEta());
             optionalUserEntity.get().setEmail(userDto.getEmail());
             usersRepository.save(optionalUserEntity.get());
-            userResponse = mapperUserDTO.fromDtoToResponse(userDto);
+            userResponse = new UserResponse("User aggiornato con successo " + oid, oid.toString(), userDto, HttpStatus.OK);
         } else {
-            userResponse = new UserResponse("User non esistente");
+            userResponse = new UserResponse("User non esistente", HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+        return mapperUserDTO.responseToDTO(userResponse);
     }
 
-    public ResponseEntity<UserResponse> getByName(String name) {
+    public UserResponseDTO getByName(String name) {
         UserResponse userResponse = null;
         List<UserEntity> userEntities = usersRepository.searchByName(name);
         if (userEntities == null || userEntities.isEmpty()) {
-            userResponse = new UserResponse("Nessuno user trovato");
+            userResponse = new UserResponse("Nessuno user trovato", HttpStatus.NOT_FOUND);
         } else {
-            userResponse = new UserResponse("Utente trovato " + userEntities.getFirst().getId());
+            UserEntity userEntity = userEntities.getFirst();
+            userResponse = mapperUserDTO.entityToResponse(userEntity);
+            userResponse.setMessage("Utente trovato " + userEntity.getId());
+            userResponse.setStatus(HttpStatus.OK);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+        return mapperUserDTO.responseToDTO(userResponse);
     }
 
-    public ResponseEntity<UserResponse> getById(Long oid) {
+    public UserResponseDTO getById(Long oid) {
 
         UserEntity entity = usersRepository.findById(oid).orElseThrow(()->new AppException("User " + oid + " non trovato ", HttpStatus.NOT_FOUND));
-        UserResponse userResponse = new UserResponse("Utente trovato " + entity.getId());
+        UserResponse userResponse = new UserResponse("Utente trovato " + entity.getId(), HttpStatus.OK);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+        return mapperUserDTO.responseToDTO(userResponse);
     }
 
-    public ResponseEntity<UserResponse> getByNameNative(String name) {
+    public UserResponseDTO getByNameNative(String name) {
         UserResponse userResponse = null;
         List<UserEntity> userEntities = usersRepository.searchByNameNative(name);
         if (userEntities == null || userEntities.isEmpty()) {
-            userResponse = new UserResponse("Nessuno user trovato");
+            userResponse = new UserResponse("Nessuno user trovato", HttpStatus.NOT_FOUND);
+
         } else {
-            userResponse = new UserResponse("Utente trovato " + userEntities.getFirst().getId());
+            UserEntity userEntity = userEntities.getFirst();
+            userResponse = mapperUserDTO.entityToResponse(userEntity);
+            userResponse.setMessage("Utente trovato " + userEntity.getId());
+            userResponse.setStatus(HttpStatus.OK);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+        return mapperUserDTO.responseToDTO(userResponse);
     }
 }
