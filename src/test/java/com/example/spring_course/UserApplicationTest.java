@@ -1,22 +1,22 @@
 package com.example.spring_course;
 
-import com.example.spring_course.model.UserResponse;
+import com.example.spring_course.exception.AppException;
 import com.example.spring_course.repository.UsersRepository;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.UserService;
 import com.example.spring_course.service.dto.UserRequestDTO;
+import com.example.spring_course.service.dto.UserResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,5 +53,53 @@ public class UserApplicationTest {
         //assertThrows(Exception.class, ()->{
          //  userService.createUser(userRequestDTO);
         //});
+    }*/
+
+    /*void shouldCreateUserWhenEmailDoesNotExist() {
+        UserRequestDTO request = new UserRequestDTO();
+        request.setUsername("cross");
+        request.setEmail("mario.rossi@example.com");
+        request.setFirstName("Mario");
+        request.setLastName("Rossi");
+        request.setAddress("Via Roma 1");
+
+        UserEntity savedUser = new UserEntity();
+        savedUser.setUsername("cross");
+        savedUser.setEmail("mario.rossi@example.com");
+        savedUser.setFirstName("Mario");
+        savedUser.setLastName("Rossi");
+        savedUser.setAddress("Via Roma 1");
+
+        when(usersRepository.findByEmail("mario.rossi@example.com"))
+                .thenReturn(Optional.empty());
+
+        when(usersRepository.save(any(UserEntity.class)))
+                .thenReturn(savedUser);
+
+        UserResponseDTO response = userService.createUser(request);
+
+        assertNotNull(response);
+        assertEquals("mario.rossi@example.com", response.getEmail());
+        assertEquals("Mario", response.getFirstName());
+        assertEquals("Rossi", response.getLastName());
+        assertNotNull(response.getRequestId());
+
+        verify(usersRepository).findByEmail("mario.rossi@example.com");
+        verify(usersRepository).save(any(UserEntity.class));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingNonExistingUser() {
+        String email = "mario.rossi@example.com";
+
+        when(usersRepository.findByEmail(email))
+                .thenReturn(Optional.empty());
+
+        AppException exception = assertThrows(
+                AppException.class,
+                () -> userService.updateUser(email, new UserRequestDTO())
+        );
+
+        assertEquals("User not found", exception.getMessage());
     }*/
 }

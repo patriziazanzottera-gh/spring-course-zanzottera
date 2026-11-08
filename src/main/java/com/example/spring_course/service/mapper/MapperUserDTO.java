@@ -1,8 +1,10 @@
 package com.example.spring_course.service.mapper;
 
 import com.example.spring_course.model.UserRequest;
+import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.dto.UserRequestDTO;
+import com.example.spring_course.service.dto.UserResponseDTO;
 import org.hibernate.mapping.UserDefinedType;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -25,6 +27,26 @@ public abstract class MapperUserDTO {
     }
 
     public UserEntity dtoToEntity(UserRequestDTO userDto) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(userDto.getEmail());
+        userEntity.setIndirizzo(userDto.getIndirizzo());
+        userEntity.setNome(userDto.getNome());
+        userEntity.setEta(userDto.getEta());
+
+        return userEntity;
+    }
+
+    public UserResponseDTO entityToDTO(UserResponse userResponse) {
+        UserResponseDTO userDTO = new UserResponseDTO();
+        userDTO.setEmail(userResponse.getEmail());
+        userDTO.setIndirizzo(userResponse.getIndirizzo());
+        userDTO.setNome(userResponse.getNome());
+        userDTO.setEta(userResponse.getEta());
+
+        return userDTO;
+    }
+
+    public UserEntity responseDtoToEntity(UserResponseDTO userDto) {
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(userDto.getEmail());
         userEntity.setIndirizzo(userDto.getIndirizzo());

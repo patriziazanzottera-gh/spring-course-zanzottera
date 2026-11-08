@@ -54,8 +54,8 @@ public class UserController {
     @ApiResponse(responseCode = "200"
             , description = "Utente creato correttamente"
             , content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON_VALUE
-                    , examples = @ExampleObject ("""
+            mediaType = MediaType.APPLICATION_JSON_VALUE
+            , examples = @ExampleObject ("""
                         {
                               "email": "pat.zan2@gmaioo.com",
                               "message": "User creato con successo e9c0c4c9-22d9-4d81-870f-8d4ebfb26d38",
@@ -63,8 +63,9 @@ public class UserController {
                               "userId": "e9c0c4c9-22d9-4d81-870f-8d4ebfb26d38"
                         }
                     """)
-                    , schema =  @Schema(implementation = UserResponse.class)
+            , schema =  @Schema(implementation = UserResponse.class)
     ))
+
 
     @PostMapping("/createUser")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {

@@ -11,6 +11,8 @@ public class UserResponse {
     private String userId;
     private String nome;
     private String email;
+    private int eta;
+    private String indirizzo;
     private String message;
 
     public UserResponse(String message,  String oid, UserRequestDTO user) {
