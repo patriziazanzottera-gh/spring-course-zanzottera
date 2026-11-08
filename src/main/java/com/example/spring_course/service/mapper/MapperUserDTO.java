@@ -36,14 +36,46 @@ public abstract class MapperUserDTO {
         return userEntity;
     }
 
-    public UserResponseDTO entityToDTO(UserResponse userResponse) {
+    public UserResponseDTO responseToDTO(UserResponse userResponse) {
         UserResponseDTO userDTO = new UserResponseDTO();
         userDTO.setEmail(userResponse.getEmail());
         userDTO.setIndirizzo(userResponse.getIndirizzo());
         userDTO.setNome(userResponse.getNome());
         userDTO.setEta(userResponse.getEta());
+        userDTO.setStatus(userResponse.getStatus());
+        userDTO.setMessage(userResponse.getMessage());
+        return userDTO;
+    }
+
+    public UserResponse dtoToResponse(UserResponseDTO userResponseDTO) {
+        UserResponse user = new UserResponse();
+        user.setEmail(userResponseDTO.getEmail());
+        user.setIndirizzo(userResponseDTO.getIndirizzo());
+        user.setNome(userResponseDTO.getNome());
+        user.setEta(userResponseDTO.getEta());
+        user.setStatus(userResponseDTO.getStatus());
+        user.setMessage(userResponseDTO.getMessage());
+        return user;
+    }
+
+    public UserResponseDTO entityToDTO(UserEntity userEntity) {
+        UserResponseDTO userDTO = new UserResponseDTO();
+        userDTO.setEmail(userEntity.getEmail());
+        userDTO.setIndirizzo(userEntity.getIndirizzo());
+        userDTO.setNome(userEntity.getNome());
+        userDTO.setEta(userEntity.getEta());
 
         return userDTO;
+    }
+
+    public UserResponse entityToResponse(UserEntity userEntity) {
+        UserResponse user =  new UserResponse();
+        user.setEmail(userEntity.getEmail());
+        user.setIndirizzo(userEntity.getIndirizzo());
+        user.setNome(userEntity.getNome());
+        user.setEta(userEntity.getEta());
+
+        return user;
     }
 
     public UserEntity responseDtoToEntity(UserResponseDTO userDto) {

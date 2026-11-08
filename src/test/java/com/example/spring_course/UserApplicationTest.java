@@ -1,6 +1,7 @@
 package com.example.spring_course;
 
 import com.example.spring_course.exception.AppException;
+import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.repository.UsersRepository;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.UserService;
@@ -11,11 +12,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,8 +44,10 @@ public class UserApplicationTest {
         UserRequestDTO userRequestDTO = new UserRequestDTO();
         userRequestDTO.setEmail("pat75.zan@gmail.it");
         userRequestDTO.setNome("Nome");
+
         UserEntity userEntity = new UserEntity();
         userEntity.setId(188L);
+        userEntity.setEmail(userRequestDTO.getEmail());
 
         when(usersRepository.findByEmail(anyString())).thenReturn(Optional.of(userEntity));
 
