@@ -7,20 +7,25 @@ import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.UserService;
 import com.example.spring_course.service.dto.UserRequestDTO;
 import com.example.spring_course.service.dto.UserResponseDTO;
+import com.example.spring_course.service.mapper.MapperUserDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 public class UserApplicationTest {
@@ -31,6 +36,9 @@ public class UserApplicationTest {
     @Mock
     private UsersRepository usersRepository;
 
+    @Mock
+    private MapperUserDTO mapperUserDTO;
+
     @Test
     public void calcolaTotale() {
         double prezzo=10.0;
@@ -39,72 +47,126 @@ public class UserApplicationTest {
         assertEquals(30.0, totale);
     }
 
-    /*@Test
-    public void createUserTest() {
+    @Test
+    public void testCreateUser() {
         UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setEmail("pat75.zan@gmail.it");
+        userRequestDTO.setEmail("cat75.zan@gmail.it");
+        userRequestDTO.setEta(45);
+        userRequestDTO.setIndirizzo("Via Genova 56");
         userRequestDTO.setNome("Nome");
-
+        Long oid = new Random().nextLong();
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(188L);
+        userEntity.setId(oid);
         userEntity.setEmail(userRequestDTO.getEmail());
+        userEntity.setIndirizzo(userRequestDTO.getIndirizzo());
+        userEntity.setEta(userRequestDTO.getEta());
+        userEntity.setNome(userRequestDTO.getNome());
 
-        when(usersRepository.findByEmail(anyString())).thenReturn(Optional.of(userEntity));
+        when(usersRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(usersRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+        when(mapperUserDTO.dtoToEntity(any(UserRequestDTO.class)))
+                .thenAnswer(invocation -> {
+                    UserRequestDTO dto = invocation.getArgument(0);
 
-        ResponseEntity<UserResponse> userResponse = userService.createUser(userRequestDTO);
-        assertNotNull(userResponse);
-      //  assertEquals(1L, userResponse.getBody().getUserId());
-        //TODO fai un altro metodo
-        //assertThrows(Exception.class, ()->{
-         //  userService.createUser(userRequestDTO);
-        //});
-    }*/
+                    UserEntity entity = new UserEntity();
+                    entity.setEmail(dto.getEmail());
+                    entity.setNome(dto.getNome());
+                    entity.setIndirizzo(dto.getIndirizzo());
+                    entity.setEta(dto.getEta());
+                    entity.setId(oid);
 
-    /*void shouldCreateUserWhenEmailDoesNotExist() {
-        UserRequestDTO request = new UserRequestDTO();
-        request.setUsername("cross");
-        request.setEmail("mario.rossi@example.com");
-        request.setFirstName("Mario");
-        request.setLastName("Rossi");
-        request.setAddress("Via Roma 1");
+                    return entity;
+                });
+        when(mapperUserDTO.responseToDTO(any(UserResponse.class)))
+                .thenAnswer(invocation -> {
 
-        UserEntity savedUser = new UserEntity();
-        savedUser.setUsername("cross");
-        savedUser.setEmail("mario.rossi@example.com");
-        savedUser.setFirstName("Mario");
-        savedUser.setLastName("Rossi");
-        savedUser.setAddress("Via Roma 1");
+                    UserResponse userResponse = invocation.getArgument(0);
 
-        when(usersRepository.findByEmail("mario.rossi@example.com"))
-                .thenReturn(Optional.empty());
+                    UserResponseDTO userDTO = new UserResponseDTO();
+                    userDTO.setEmail(userResponse.getEmail());
+                    userDTO.setIndirizzo(userResponse.getIndirizzo());
+                    userDTO.setNome(userResponse.getNome());
+                    userDTO.setEta(userResponse.getEta());
+                    userDTO.setStatus(userResponse.getStatus());
+                    userDTO.setMessage(userResponse.getMessage());
 
-        when(usersRepository.save(any(UserEntity.class)))
-                .thenReturn(savedUser);
-
-        UserResponseDTO response = userService.createUser(request);
-
-        assertNotNull(response);
-        assertEquals("mario.rossi@example.com", response.getEmail());
-        assertEquals("Mario", response.getFirstName());
-        assertEquals("Rossi", response.getLastName());
-        assertNotNull(response.getRequestId());
-
-        verify(usersRepository).findByEmail("mario.rossi@example.com");
-        verify(usersRepository).save(any(UserEntity.class));
+                    return userDTO;
+                });
+        UserResponseDTO userResponseDTO= userService.createUser(userRequestDTO);
+        assertNotNull(userResponseDTO);
+        assertEquals(userRequestDTO.getEmail(), userResponseDTO.getEmail());
     }
 
     @Test
-    void shouldThrowExceptionWhenUpdatingNonExistingUser() {
-        String email = "mario.rossi@example.com";
+    public void testCreateUserIsAlreadyPresent() {
+        UserRequestDTO userRequestDTO = new UserRequestDTO();
+        userRequestDTO.setEmail("cat75.zan@gmail.it");
+        userRequestDTO.setEta(45);
+        userRequestDTO.setIndirizzo("Via Genova 56");
+        userRequestDTO.setNome("Nome");
+        Long oid = new Random().nextLong();
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(oid);
+        userEntity.setEmail(userRequestDTO.getEmail());
+        userEntity.setIndirizzo(userRequestDTO.getIndirizzo());
+        userEntity.setEta(userRequestDTO.getEta());
+        userEntity.setNome(userRequestDTO.getNome());
 
-        when(usersRepository.findByEmail(email))
-                .thenReturn(Optional.empty());
+        when(usersRepository.findByEmail(anyString())).thenReturn(Optional.of(userEntity));
 
-        AppException exception = assertThrows(
-                AppException.class,
-                () -> userService.updateUser(email, new UserRequestDTO())
-        );
+        AppException appException = assertThrows(AppException.class, ()->{
+            userService.createUser(userRequestDTO);
+        });
 
-        assertEquals("User not found", exception.getMessage());
-    }*/
+        assertEquals(HttpStatus.CONFLICT, appException.getStatusCode());
+    }
+
+    @Test
+    public void testFindUserByName() {
+        UserRequestDTO userRequestDTO = new UserRequestDTO();
+        userRequestDTO.setEmail("cat75.zan@gmail.it");
+        userRequestDTO.setEta(45);
+        userRequestDTO.setIndirizzo("Via Genova 56");
+        userRequestDTO.setNome("Nome");
+
+        Long oid = new Random().nextLong();
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(oid);
+        userEntity.setEmail(userRequestDTO.getEmail());
+        userEntity.setIndirizzo(userRequestDTO.getIndirizzo());
+        userEntity.setEta(userRequestDTO.getEta());
+        userEntity.setNome(userRequestDTO.getNome());
+
+        when(usersRepository.searchByName(anyString())).thenReturn(List.of(userEntity));
+
+        UserResponseDTO userResponseDTO = userService.getByName(userRequestDTO.getNome());
+        assertNotNull(userResponseDTO);
+        assertEquals(userRequestDTO.getNome(), userResponseDTO.getNome());
+    }
+
+    @Test
+    public void testFindUserByNameNotFound() {
+        UserRequestDTO userRequestDTO = new UserRequestDTO();
+        userRequestDTO.setEmail("cat75.zan@gmail.it");
+        userRequestDTO.setEta(45);
+        userRequestDTO.setIndirizzo("Via Genova 56");
+        userRequestDTO.setNome("Nome");
+
+        Long oid = new Random().nextLong();
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(oid);
+        userEntity.setEmail(userRequestDTO.getEmail());
+        userEntity.setIndirizzo(userRequestDTO.getIndirizzo());
+        userEntity.setEta(userRequestDTO.getEta());
+        userEntity.setNome(userRequestDTO.getNome());
+
+        when(usersRepository.searchByName(anyString())).thenReturn(Collections.emptyList());
+
+        AppException appException = assertThrows(AppException.class, ()->{
+            userService.getByName(userRequestDTO.getNome());
+        });
+        assertEquals(HttpStatus.NOT_FOUND, appException.getStatusCode());
+    }
 }
