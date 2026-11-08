@@ -40,9 +40,10 @@ public class UserService {
         if (optionalUserEntity.isEmpty()) {
             UserEntity userEntity = mapperUserDTO.dtoToEntity(userDto);
             usersRepository.save(userEntity);
+            log.info("Nessun utente trovato, lo creo {}",userEntity.getId());
             userResponse = new UserResponse("User creato con successo " + oid, oid.toString(), userDto, HttpStatus.OK);
         } else {
-            log.error("User già esistente");
+            log.error("User già esistente {}",optionalUserEntity.get().getEmail());
             userResponse = new UserResponse("User già esistente", HttpStatus.FOUND);
         }
         return mapperUserDTO.responseToDTO(userResponse);
@@ -60,8 +61,10 @@ public class UserService {
             optionalUserEntity.get().setEta(userDto.getEta());
             optionalUserEntity.get().setEmail(userDto.getEmail());
             usersRepository.save(optionalUserEntity.get());
+            log.info("Utente trovato, lo modifico {}",optionalUserEntity.get().getEmail());
             userResponse = new UserResponse("User aggiornato con successo " + oid, oid.toString(), userDto, HttpStatus.OK);
         } else {
+            log.error("User non presente {}",userDto.getEmail());
             userResponse = new UserResponse("User non esistente", HttpStatus.NOT_FOUND);
         }
         return mapperUserDTO.responseToDTO(userResponse);
@@ -72,11 +75,13 @@ public class UserService {
         List<UserEntity> userEntities = usersRepository.searchByName(name);
         if (userEntities == null || userEntities.isEmpty()) {
             userResponse = new UserResponse("Nessuno user trovato", HttpStatus.NOT_FOUND);
+            log.error("User non presente {}", name);
         } else {
             UserEntity userEntity = userEntities.getFirst();
             userResponse = mapperUserDTO.entityToResponse(userEntity);
             userResponse.setMessage("Utente trovato " + userEntity.getId());
             userResponse.setStatus(HttpStatus.OK);
+            log.info("Utente trovato {}",name);
         }
 
         return mapperUserDTO.responseToDTO(userResponse);
@@ -86,7 +91,6 @@ public class UserService {
 
         UserEntity entity = usersRepository.findById(oid).orElseThrow(()->new AppException("User " + oid + " non trovato ", HttpStatus.NOT_FOUND));
         UserResponse userResponse = new UserResponse("Utente trovato " + entity.getId(), HttpStatus.OK);
-
         return mapperUserDTO.responseToDTO(userResponse);
     }
 
@@ -95,12 +99,13 @@ public class UserService {
         List<UserEntity> userEntities = usersRepository.searchByNameNative(name);
         if (userEntities == null || userEntities.isEmpty()) {
             userResponse = new UserResponse("Nessuno user trovato", HttpStatus.NOT_FOUND);
-
+            log.error("User non presente {}",name);
         } else {
             UserEntity userEntity = userEntities.getFirst();
             userResponse = mapperUserDTO.entityToResponse(userEntity);
             userResponse.setMessage("Utente trovato " + userEntity.getId());
             userResponse.setStatus(HttpStatus.OK);
+            log.info("Utente trovato {}",name);
         }
         return mapperUserDTO.responseToDTO(userResponse);
     }
