@@ -1,5 +1,6 @@
 package com.example.spring_course.model;
 
+import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.repository.model.Stato;
 import com.example.spring_course.service.dto.OrdineRequestDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,23 +36,23 @@ public class OrdineResponse {
     private HttpStatus httpStatus;
     private String messaggio;
 
-    public OrdineResponse(String messaggio, Long id, OrdineRequestDTO ordineRequestDTO, HttpStatus httpStatus) {
+    public OrdineResponse(String messaggio, OrdineEntity ordineEntity, HttpStatus httpStatusPar) {
         this.messaggio = messaggio;
-        this.id=id;
-        this.codiceOrdine = ordineRequestDTO.getCodiceOrdine();
-        this.nomeCliente = ordineRequestDTO.getNomeCliente();
-        this.cognomeCliente = ordineRequestDTO.getCognomeCliente();
-        this.emailCliente = ordineRequestDTO.getEmailCliente();
-        this.telefonoCliente = ordineRequestDTO.getTelefonoCliente();
-        this.indirizzoSpedizione = ordineRequestDTO.getIndirizzoSpedizione();
-        this.cittaSpedizione = ordineRequestDTO.getCittaSpedizione();
-        this.cap = ordineRequestDTO.getCap();
-        this.prodotto = ordineRequestDTO.getProdotto();
-        this.quantita = ordineRequestDTO.getQuantita();
-        this.prezzoUnitario = ordineRequestDTO.getPrezzoUnitario();
-        this.totale = ordineRequestDTO.getTotale();
-        this.stato = ordineRequestDTO.getStato();
-        this.dataOrdine = ordineRequestDTO.getDataOrdine();
-        this.httpStatus=httpStatus;
+        this.id=ordineEntity.getId();
+        this.codiceOrdine = ordineEntity.getCodiceOrdine();
+        this.nomeCliente = ordineEntity.getNomeCliente();
+        this.cognomeCliente = ordineEntity.getCognomeCliente();
+        this.emailCliente = ordineEntity.getEmailCliente();
+        this.telefonoCliente = ordineEntity.getTelefonoCliente();
+        this.indirizzoSpedizione = ordineEntity.getIndirizzoSpedizione();
+        this.cittaSpedizione = ordineEntity.getCittaSpedizione();
+        this.cap = ordineEntity.getCap();
+        this.prodotto = ordineEntity.getProdotto();
+        this.quantita = ordineEntity.getQuantita();
+        this.prezzoUnitario = ordineEntity.getPrezzoUnitario();
+        this.totale = ordineEntity.getTotale();
+        this.stato = ordineEntity.getStato();
+        this.dataOrdine = ordineEntity.getDataOrdine();
+        this.httpStatus=httpStatusPar;
     }
 }

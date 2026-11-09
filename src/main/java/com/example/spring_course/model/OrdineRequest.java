@@ -13,54 +13,51 @@ import java.time.LocalDateTime;
 @Data
 public class OrdineRequest {
 
-    @NotBlank
+
     private String codiceOrdine;
 
-    @NotBlank
+    @NotNull
     @Pattern(
             regexp = "^.{2,50}$",
-            message = "Il campo deve contenere da 2 a 50 caratteri"
+            message = "Il nomeCliente deve contenere da 2 a 50 caratteri"
     )
     private String nomeCliente;
 
     @NotNull
-    @NotBlank
     @Pattern(
             regexp = "^(?=.*\\S).{2,50}$",
-            message = "Il campo deve contenere da 2 a 50 caratteri"
+            message = "Il cognomeCliente deve contenere da 2 a 50 caratteri"
     )
     private String cognomeCliente;
 
-    @NotBlank
-    @Email
+    @NotNull
     private String emailCliente;
 
+    @NotNull
     @Pattern(
             regexp = "^[0-9]{0,20}$",
-            message = "Inserire un numero composto massimo 20 cifre"
+            message = "telefonoCliente: Inserire un numero composto massimo 20 cifre"
     )
     private String telefonoCliente;
 
     @NotNull
-    @NotBlank
     @Pattern(
-            regexp = "^(?=.*\\S).{50,120}$",
-            message = "Il campo deve contenere da 50 a 120 caratteri"
+            regexp = "^(?=.*\\S).{5,120}$",
+            message = "indirizzoSpedizione: Il campo deve contenere da 5 a 120 caratteri"
     )
     private String indirizzoSpedizione;
 
     @NotNull
-    @NotBlank
     @Pattern(
             regexp = "^(?=.*\\S).{2,50}$",
-            message = "Il campo deve contenere da 2 a 50 caratteri"
+            message = "cittaSpedizione: Il campo deve contenere da 2 a 50 caratteri"
     )
     private String cittaSpedizione;
 
     @NotNull
     @Pattern(
             regexp = "^[0-9]{5}$",
-            message = "Inserire esattamente 5 cifre numeriche"
+            message = "cap: Inserire esattamente 5 cifre numeriche"
     )
     private String cap;
 
@@ -80,13 +77,9 @@ public class OrdineRequest {
     @Positive
     private Double prezzoUnitario;
 
-    @NotNull
-    @Positive
     private Double totale;
 
-    @NotNull
     private Stato stato;
 
-    @NotNull
     private LocalDateTime dataOrdine;
 }

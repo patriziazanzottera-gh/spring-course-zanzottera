@@ -58,6 +58,7 @@ public abstract class OrdineMapper {
         ordineResponseDTO.setTotale(ordineResponse.getTotale());
         ordineResponseDTO.setStato(ordineResponse.getStato());
         ordineResponseDTO.setDataOrdine(ordineResponse.getDataOrdine());
+        ordineResponseDTO.setHttpStatus(ordineResponse.getHttpStatus());
         return ordineResponseDTO;
     }
 
@@ -77,7 +78,7 @@ public abstract class OrdineMapper {
         ordineResponse.setTotale(ordineResponseDTO.getTotale());
         ordineResponse.setStato(ordineResponseDTO.getStato());
         ordineResponse.setDataOrdine(ordineResponseDTO.getDataOrdine());
-
+        ordineResponse.setHttpStatus(ordineResponseDTO.getHttpStatus());
         return ordineResponse;
     }
 

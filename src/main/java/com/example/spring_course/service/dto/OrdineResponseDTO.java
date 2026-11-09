@@ -27,4 +27,5 @@ public class OrdineResponseDTO {
     private Double totale;
     private Stato stato;
     private LocalDateTime dataOrdine;
+    private HttpStatus httpStatus;
 }
