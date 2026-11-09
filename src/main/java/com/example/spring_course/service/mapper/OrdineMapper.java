@@ -1,27 +1,26 @@
 package com.example.spring_course.service.mapper;
 
-import com.example.spring_course.model.OrdineRequest;
-import com.example.spring_course.model.OrdineResponse;
+import com.example.spring_course.model.CreateOrdineRequest;
+import com.example.spring_course.model.CreateOrdineResponse;
 import com.example.spring_course.repository.model.OrdineEntity;
-import com.example.spring_course.service.dto.OrdineRequestDTO;
-import com.example.spring_course.service.dto.OrdineResponseDTO;
+import com.example.spring_course.service.dto.CreateOrdineRequestDTO;
+import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
+import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-
-import java.time.LocalDateTime;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class OrdineMapper {
 
     @Mapping(target = "totale", expression = "java(calcolaTotale(ordineRequest.getPrezzoUnitario(), ordineRequest.getQuantita()))")
-    public abstract OrdineRequestDTO toRequestDTO (OrdineRequest ordineRequest);
+    public abstract CreateOrdineRequestDTO toRequestDTO (CreateOrdineRequest ordineRequest);
 
     public Double calcolaTotale(Double prezzoUnitario, Integer quantita) {
         return prezzoUnitario*quantita;
     }
 
-    public OrdineEntity dtoToEntity(OrdineRequestDTO ordineRequestDTO) {
+    public OrdineEntity dtoToEntity(CreateOrdineRequestDTO ordineRequestDTO) {
         OrdineEntity ordineEntity = new OrdineEntity();
 
         ordineEntity.setCodiceOrdine(ordineRequestDTO.getCodiceOrdine());
@@ -42,48 +41,50 @@ public abstract class OrdineMapper {
         return ordineEntity;
     }
 
-    public OrdineResponseDTO responseToDTO(OrdineResponse ordineResponse) {
-        OrdineResponseDTO ordineResponseDTO = new OrdineResponseDTO();
-        ordineResponseDTO.setCodiceOrdine(ordineResponse.getCodiceOrdine());
-        ordineResponseDTO.setNomeCliente(ordineResponse.getNomeCliente());
-        ordineResponseDTO.setCognomeCliente(ordineResponse.getCognomeCliente());
-        ordineResponseDTO.setEmailCliente(ordineResponse.getEmailCliente());
-        ordineResponseDTO.setTelefonoCliente(ordineResponse.getTelefonoCliente());
-        ordineResponseDTO.setIndirizzoSpedizione(ordineResponse.getIndirizzoSpedizione());
-        ordineResponseDTO.setCittaSpedizione(ordineResponse.getCittaSpedizione());
-        ordineResponseDTO.setCap(ordineResponse.getCap());
-        ordineResponseDTO.setProdotto(ordineResponse.getProdotto());
-        ordineResponseDTO.setQuantita(ordineResponse.getQuantita());
-        ordineResponseDTO.setPrezzoUnitario(ordineResponse.getPrezzoUnitario());
-        ordineResponseDTO.setTotale(ordineResponse.getTotale());
-        ordineResponseDTO.setStato(ordineResponse.getStato());
-        ordineResponseDTO.setDataOrdine(ordineResponse.getDataOrdine());
-        ordineResponseDTO.setHttpStatus(ordineResponse.getHttpStatus());
+    public CreateOrdineResponseDTO responseToDTO(CreateOrdineResponse createOrdineResponse) {
+        CreateOrdineResponseDTO ordineResponseDTO = new CreateOrdineResponseDTO();
+        ordineResponseDTO.setId(createOrdineResponse.getId());
+        ordineResponseDTO.setCodiceOrdine(createOrdineResponse.getCodiceOrdine());
+        ordineResponseDTO.setNomeCliente(createOrdineResponse.getNomeCliente());
+        ordineResponseDTO.setCognomeCliente(createOrdineResponse.getCognomeCliente());
+        ordineResponseDTO.setEmailCliente(createOrdineResponse.getEmailCliente());
+        ordineResponseDTO.setTelefonoCliente(createOrdineResponse.getTelefonoCliente());
+        ordineResponseDTO.setIndirizzoSpedizione(createOrdineResponse.getIndirizzoSpedizione());
+        ordineResponseDTO.setCittaSpedizione(createOrdineResponse.getCittaSpedizione());
+        ordineResponseDTO.setCap(createOrdineResponse.getCap());
+        ordineResponseDTO.setProdotto(createOrdineResponse.getProdotto());
+        ordineResponseDTO.setQuantita(createOrdineResponse.getQuantita());
+        ordineResponseDTO.setPrezzoUnitario(createOrdineResponse.getPrezzoUnitario());
+        ordineResponseDTO.setTotale(createOrdineResponse.getTotale());
+        ordineResponseDTO.setStato(createOrdineResponse.getStato());
+        ordineResponseDTO.setDataOrdine(createOrdineResponse.getDataOrdine());
+        ordineResponseDTO.setHttpStatus(createOrdineResponse.getHttpStatus());
         return ordineResponseDTO;
     }
 
-    public OrdineResponse dtoToResponse(OrdineResponseDTO ordineResponseDTO) {
-        OrdineResponse ordineResponse = new OrdineResponse();
-        ordineResponse.setCodiceOrdine(ordineResponseDTO.getCodiceOrdine());
-        ordineResponse.setNomeCliente(ordineResponseDTO.getNomeCliente());
-        ordineResponse.setCognomeCliente(ordineResponseDTO.getCognomeCliente());
-        ordineResponse.setEmailCliente(ordineResponseDTO.getEmailCliente());
-        ordineResponse.setTelefonoCliente(ordineResponseDTO.getTelefonoCliente());
-        ordineResponse.setIndirizzoSpedizione(ordineResponseDTO.getIndirizzoSpedizione());
-        ordineResponse.setCittaSpedizione(ordineResponseDTO.getCittaSpedizione());
-        ordineResponse.setCap(ordineResponseDTO.getCap());
-        ordineResponse.setProdotto(ordineResponseDTO.getProdotto());
-        ordineResponse.setQuantita(ordineResponseDTO.getQuantita());
-        ordineResponse.setPrezzoUnitario(ordineResponseDTO.getPrezzoUnitario());
-        ordineResponse.setTotale(ordineResponseDTO.getTotale());
-        ordineResponse.setStato(ordineResponseDTO.getStato());
-        ordineResponse.setDataOrdine(ordineResponseDTO.getDataOrdine());
-        ordineResponse.setHttpStatus(ordineResponseDTO.getHttpStatus());
-        return ordineResponse;
+    public CreateOrdineResponse dtoToResponse(CreateOrdineResponseDTO ordineResponseDTO) {
+        CreateOrdineResponse createOrdineResponse = new CreateOrdineResponse();
+        createOrdineResponse.setCodiceOrdine(ordineResponseDTO.getCodiceOrdine());
+        createOrdineResponse.setId(ordineResponseDTO.getId());
+        createOrdineResponse.setNomeCliente(ordineResponseDTO.getNomeCliente());
+        createOrdineResponse.setCognomeCliente(ordineResponseDTO.getCognomeCliente());
+        createOrdineResponse.setEmailCliente(ordineResponseDTO.getEmailCliente());
+        createOrdineResponse.setTelefonoCliente(ordineResponseDTO.getTelefonoCliente());
+        createOrdineResponse.setIndirizzoSpedizione(ordineResponseDTO.getIndirizzoSpedizione());
+        createOrdineResponse.setCittaSpedizione(ordineResponseDTO.getCittaSpedizione());
+        createOrdineResponse.setCap(ordineResponseDTO.getCap());
+        createOrdineResponse.setProdotto(ordineResponseDTO.getProdotto());
+        createOrdineResponse.setQuantita(ordineResponseDTO.getQuantita());
+        createOrdineResponse.setPrezzoUnitario(ordineResponseDTO.getPrezzoUnitario());
+        createOrdineResponse.setTotale(ordineResponseDTO.getTotale());
+        createOrdineResponse.setStato(ordineResponseDTO.getStato());
+        createOrdineResponse.setDataOrdine(ordineResponseDTO.getDataOrdine());
+        createOrdineResponse.setHttpStatus(ordineResponseDTO.getHttpStatus());
+        return createOrdineResponse;
     }
 
-    public OrdineResponseDTO entityToDTO(OrdineEntity ordineEntity) {
-        OrdineResponseDTO ordineResponseDTO = new OrdineResponseDTO();
+    public CreateOrdineResponseDTO entityToDTO(OrdineEntity ordineEntity) {
+        CreateOrdineResponseDTO ordineResponseDTO = new CreateOrdineResponseDTO();
 
         ordineResponseDTO.setCodiceOrdine(ordineEntity.getCodiceOrdine());
         ordineResponseDTO.setNomeCliente(ordineEntity.getNomeCliente());
@@ -103,27 +104,27 @@ public abstract class OrdineMapper {
         return ordineResponseDTO;
     }
 
-    public OrdineResponse entityToResponse(OrdineEntity ordineEntity) {
-        OrdineResponse ordineResponse =  new OrdineResponse();
-        ordineResponse.setCodiceOrdine(ordineEntity.getCodiceOrdine());
-        ordineResponse.setNomeCliente(ordineEntity.getNomeCliente());
-        ordineResponse.setCognomeCliente(ordineEntity.getCognomeCliente());
-        ordineResponse.setEmailCliente(ordineEntity.getEmailCliente());
-        ordineResponse.setTelefonoCliente(ordineEntity.getTelefonoCliente());
-        ordineResponse.setIndirizzoSpedizione(ordineEntity.getIndirizzoSpedizione());
-        ordineResponse.setCittaSpedizione(ordineEntity.getCittaSpedizione());
-        ordineResponse.setCap(ordineEntity.getCap());
-        ordineResponse.setProdotto(ordineEntity.getProdotto());
-        ordineResponse.setQuantita(ordineEntity.getQuantita());
-        ordineResponse.setPrezzoUnitario(ordineEntity.getPrezzoUnitario());
-        ordineResponse.setTotale(ordineEntity.getTotale());
-        ordineResponse.setStato(ordineEntity.getStato());
-        ordineResponse.setDataOrdine(ordineEntity.getDataOrdine());
+    public CreateOrdineResponse entityToResponse(OrdineEntity ordineEntity) {
+        CreateOrdineResponse createOrdineResponse =  new CreateOrdineResponse();
+        createOrdineResponse.setCodiceOrdine(ordineEntity.getCodiceOrdine());
+        createOrdineResponse.setNomeCliente(ordineEntity.getNomeCliente());
+        createOrdineResponse.setCognomeCliente(ordineEntity.getCognomeCliente());
+        createOrdineResponse.setEmailCliente(ordineEntity.getEmailCliente());
+        createOrdineResponse.setTelefonoCliente(ordineEntity.getTelefonoCliente());
+        createOrdineResponse.setIndirizzoSpedizione(ordineEntity.getIndirizzoSpedizione());
+        createOrdineResponse.setCittaSpedizione(ordineEntity.getCittaSpedizione());
+        createOrdineResponse.setCap(ordineEntity.getCap());
+        createOrdineResponse.setProdotto(ordineEntity.getProdotto());
+        createOrdineResponse.setQuantita(ordineEntity.getQuantita());
+        createOrdineResponse.setPrezzoUnitario(ordineEntity.getPrezzoUnitario());
+        createOrdineResponse.setTotale(ordineEntity.getTotale());
+        createOrdineResponse.setStato(ordineEntity.getStato());
+        createOrdineResponse.setDataOrdine(ordineEntity.getDataOrdine());
 
-        return ordineResponse;
+        return createOrdineResponse;
     }
 
-    public OrdineEntity responseDtoToEntity(OrdineResponseDTO ordineResponseDTO) {
+    public OrdineEntity responseDtoToEntity(CreateOrdineResponseDTO ordineResponseDTO) {
         OrdineEntity ordineEntity = new OrdineEntity();
         ordineEntity.setCodiceOrdine(ordineResponseDTO.getCodiceOrdine());
         ordineEntity.setNomeCliente(ordineResponseDTO.getNomeCliente());

@@ -1,9 +1,9 @@
 package com.example.spring_course.controller;
 
-import com.example.spring_course.model.OrdineRequest;
-import com.example.spring_course.model.OrdineResponse;
+import com.example.spring_course.model.CreateOrdineRequest;
+import com.example.spring_course.model.CreateOrdineResponse;
 import com.example.spring_course.service.OrdineService;
-import com.example.spring_course.service.dto.OrdineResponseDTO;
+import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
 import com.example.spring_course.service.mapper.OrdineMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,7 +35,7 @@ public class OrdineController {
             , description = "Created"
             , content = @Content(
             mediaType = MediaType.APPLICATION_JSON_VALUE
-            , schema =  @Schema(implementation = OrdineResponse.class)
+            , schema =  @Schema(implementation = CreateOrdineResponse.class)
             , examples = @ExampleObject("""
                 {
                         "nomeCliente":"Tizio",
@@ -52,9 +52,9 @@ public class OrdineController {
             """)
     ))
     @PostMapping("/ordini")
-    public ResponseEntity<OrdineResponse> createUser(@Valid @RequestBody OrdineRequest ordineRequest) {
-        OrdineResponseDTO ordineResponseDTO = service.createOrdine(ordineMapper.toRequestDTO(ordineRequest));
-        OrdineResponse userResponse = ordineMapper.dtoToResponse(ordineResponseDTO);
+    public ResponseEntity<CreateOrdineResponse> createOrdine(@Valid @RequestBody CreateOrdineRequest ordineRequest) {
+        CreateOrdineResponseDTO ordineResponseDTO = service.createOrdine(ordineMapper.toRequestDTO(ordineRequest));
+        CreateOrdineResponse userResponse = ordineMapper.dtoToResponse(ordineResponseDTO);
         return ResponseEntity.status(userResponse.getHttpStatus()).body(userResponse);
     }
 

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class OrdineRequest {
+public class CreateOrdineRequest {
 
 
     private String codiceOrdine;

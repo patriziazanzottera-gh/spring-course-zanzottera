@@ -1,17 +1,12 @@
 package com.example.spring_course.service.dto;
 
 import com.example.spring_course.repository.model.Stato;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class OrdineResponseDTO {
+public class CreateOrdineRequestDTO {
 
     private String codiceOrdine;
     private String nomeCliente;
@@ -27,5 +22,5 @@ public class OrdineResponseDTO {
     private Double totale;
     private Stato stato;
     private LocalDateTime dataOrdine;
-    private HttpStatus httpStatus;
+
 }

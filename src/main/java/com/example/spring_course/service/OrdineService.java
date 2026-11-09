@@ -1,12 +1,12 @@
 package com.example.spring_course.service;
 
 import com.example.spring_course.exception.AppException;
-import com.example.spring_course.model.OrdineResponse;
+import com.example.spring_course.model.CreateOrdineResponse;
 import com.example.spring_course.repository.OrdineRepository;
 import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.repository.model.Stato;
-import com.example.spring_course.service.dto.OrdineRequestDTO;
-import com.example.spring_course.service.dto.OrdineResponseDTO;
+import com.example.spring_course.service.dto.CreateOrdineRequestDTO;
+import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
 import com.example.spring_course.service.mapper.OrdineMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -39,7 +35,7 @@ public class OrdineService {
         return sb.toString();
     }
 
-    public OrdineResponseDTO createOrdine(OrdineRequestDTO ordineRequestDTO) {
+    public CreateOrdineResponseDTO createOrdine(CreateOrdineRequestDTO ordineRequestDTO) {
         ordineRepository.findByCodiceOrdine(ordineRequestDTO.getCodiceOrdine()).ifPresent(ordine -> {
             log.error("Ordine già esistente {}",ordineRequestDTO.getCodiceOrdine());
             throw new AppException("Ordine " + ordineRequestDTO.getCodiceOrdine() + " già presente",
@@ -54,7 +50,7 @@ public class OrdineService {
 
         ordineEntity = ordineRepository.save(ordineEntity);
         log.info("Nessun utente trovato, lo creo {}",ordineEntity.getId());
-        OrdineResponse userResponse = new OrdineResponse("Ordine creato", ordineEntity, HttpStatus.CREATED);
+        CreateOrdineResponse userResponse = new CreateOrdineResponse(ordineEntity, HttpStatus.CREATED);
 
         return ordineMapper.responseToDTO(userResponse);
     }

@@ -2,9 +2,6 @@ package com.example.spring_course.model;
 
 import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.repository.model.Stato;
-import com.example.spring_course.service.dto.OrdineRequestDTO;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,10 +12,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class OrdineResponse {
+public class CreateOrdineResponse {
 
     private Long id;
     private String codiceOrdine;
+    private LocalDateTime dataOrdine;
     private String nomeCliente;
     private String cognomeCliente;
     private String emailCliente;
@@ -31,13 +29,12 @@ public class OrdineResponse {
     private Double prezzoUnitario;
     private Double totale;
     private Stato stato;
-    private LocalDateTime dataOrdine;
 
     private HttpStatus httpStatus;
-    private String messaggio;
 
-    public OrdineResponse(String messaggio, OrdineEntity ordineEntity, HttpStatus httpStatusPar) {
-        this.messaggio = messaggio;
+
+    public CreateOrdineResponse(OrdineEntity ordineEntity, HttpStatus httpStatusPar) {
+
         this.id=ordineEntity.getId();
         this.codiceOrdine = ordineEntity.getCodiceOrdine();
         this.nomeCliente = ordineEntity.getNomeCliente();
