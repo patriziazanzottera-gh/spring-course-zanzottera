@@ -50,8 +50,7 @@ public class UserService {
     public UserResponseDTO createUser(UserRequestDTO userDto) {
         usersRepository.findByEmail(userDto.getEmail()).ifPresent(user -> {
             log.error("User già esistente {}",userDto.getEmail());
-            throw new AppException( .getStatusCode()
-            "User " + userDto.getEmail() + " già presente",
+            throw new AppException("User " + userDto.getEmail() + " già presente",
                     HttpStatus.CONFLICT
             );
         });
