@@ -2,8 +2,10 @@ package com.example.spring_course.controller;
 
 import com.example.spring_course.model.CreateOrdineRequest;
 import com.example.spring_course.model.CreateOrdineResponse;
+import com.example.spring_course.model.GetOrdineResponse;
 import com.example.spring_course.service.OrdineService;
 import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
+import com.example.spring_course.service.dto.GetOrdineResponseDTO;
 import com.example.spring_course.service.mapper.OrdineMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -56,6 +58,14 @@ public class OrdineController {
         CreateOrdineResponseDTO ordineResponseDTO = service.createOrdine(ordineMapper.toRequestDTO(ordineRequest));
         CreateOrdineResponse userResponse = ordineMapper.dtoToResponse(ordineResponseDTO);
         return ResponseEntity.status(userResponse.getHttpStatus()).body(userResponse);
+    }
+
+    @GetMapping("/ordini/{id}")
+    public ResponseEntity<GetOrdineResponse> getOrdineById(@PathVariable("id") Long id) {
+        GetOrdineResponseDTO getOrdineResponseDTO = service.getById(id);
+        GetOrdineResponse getOrdineResponse = ordineMapper.dtoToResponseGet(getOrdineResponseDTO);
+
+        return ResponseEntity.status(getOrdineResponse.getHttpStatus()).body(getOrdineResponse);
     }
 
 }

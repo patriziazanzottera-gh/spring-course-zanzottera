@@ -2,11 +2,13 @@ package com.example.spring_course.service;
 
 import com.example.spring_course.exception.AppException;
 import com.example.spring_course.model.CreateOrdineResponse;
+import com.example.spring_course.model.GetOrdineResponse;
 import com.example.spring_course.repository.OrdineRepository;
 import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.repository.model.Stato;
 import com.example.spring_course.service.dto.CreateOrdineRequestDTO;
 import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
+import com.example.spring_course.service.dto.GetOrdineResponseDTO;
 import com.example.spring_course.service.mapper.OrdineMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,10 +51,18 @@ public class OrdineService {
         ordineEntity.setDataOrdine(LocalDateTime.now());
 
         ordineEntity = ordineRepository.save(ordineEntity);
-        log.info("Nessun utente trovato, lo creo {}",ordineEntity.getId());
-        CreateOrdineResponse userResponse = new CreateOrdineResponse(ordineEntity, HttpStatus.CREATED);
+        log.info("Nessun ordine trovato, lo creo {}",ordineEntity.getId());
+        CreateOrdineResponse ordineResponse = new CreateOrdineResponse(ordineEntity, HttpStatus.CREATED);
 
-        return ordineMapper.responseToDTO(userResponse);
+        return ordineMapper.responseToDTO(ordineResponse);
+    }
+
+    public GetOrdineResponseDTO getById(Long oid) {
+
+        OrdineEntity entity = ordineRepository.findById(oid).orElseThrow(()->new AppException("Ordine " + oid + " non trovato ", HttpStatus.NOT_FOUND));
+        GetOrdineResponse getOrdineResponse = new GetOrdineResponse(entity, HttpStatus.OK);
+        log.info("Ordine trovato {}",entity.getId());
+        return ordineMapper.responseToDTOGet(getOrdineResponse);
     }
 
 }

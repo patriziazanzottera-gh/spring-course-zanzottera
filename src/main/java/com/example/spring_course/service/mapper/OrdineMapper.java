@@ -2,9 +2,11 @@ package com.example.spring_course.service.mapper;
 
 import com.example.spring_course.model.CreateOrdineRequest;
 import com.example.spring_course.model.CreateOrdineResponse;
+import com.example.spring_course.model.GetOrdineResponse;
 import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.service.dto.CreateOrdineRequestDTO;
 import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
+import com.example.spring_course.service.dto.GetOrdineResponseDTO;
 import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -62,6 +64,27 @@ public abstract class OrdineMapper {
         return ordineResponseDTO;
     }
 
+    public GetOrdineResponseDTO responseToDTOGet(GetOrdineResponse getOrdineResponse) {
+        GetOrdineResponseDTO getOrdineResponseDTO = new GetOrdineResponseDTO();
+        getOrdineResponseDTO.setId(getOrdineResponse.getId());
+        getOrdineResponseDTO.setCodiceOrdine(getOrdineResponse.getCodiceOrdine());
+        getOrdineResponseDTO.setNomeCliente(getOrdineResponse.getNomeCliente());
+        getOrdineResponseDTO.setCognomeCliente(getOrdineResponse.getCognomeCliente());
+        getOrdineResponseDTO.setEmailCliente(getOrdineResponse.getEmailCliente());
+        getOrdineResponseDTO.setTelefonoCliente(getOrdineResponse.getTelefonoCliente());
+        getOrdineResponseDTO.setIndirizzoSpedizione(getOrdineResponse.getIndirizzoSpedizione());
+        getOrdineResponseDTO.setCittaSpedizione(getOrdineResponse.getCittaSpedizione());
+        getOrdineResponseDTO.setCap(getOrdineResponse.getCap());
+        getOrdineResponseDTO.setProdotto(getOrdineResponse.getProdotto());
+        getOrdineResponseDTO.setQuantita(getOrdineResponse.getQuantita());
+        getOrdineResponseDTO.setPrezzoUnitario(getOrdineResponse.getPrezzoUnitario());
+        getOrdineResponseDTO.setTotale(getOrdineResponse.getTotale());
+        getOrdineResponseDTO.setStato(getOrdineResponse.getStato());
+        getOrdineResponseDTO.setDataOrdine(getOrdineResponse.getDataOrdine());
+        getOrdineResponseDTO.setHttpStatus(getOrdineResponse.getHttpStatus());
+        return getOrdineResponseDTO;
+    }
+
     public CreateOrdineResponse dtoToResponse(CreateOrdineResponseDTO ordineResponseDTO) {
         CreateOrdineResponse createOrdineResponse = new CreateOrdineResponse();
         createOrdineResponse.setCodiceOrdine(ordineResponseDTO.getCodiceOrdine());
@@ -81,6 +104,27 @@ public abstract class OrdineMapper {
         createOrdineResponse.setDataOrdine(ordineResponseDTO.getDataOrdine());
         createOrdineResponse.setHttpStatus(ordineResponseDTO.getHttpStatus());
         return createOrdineResponse;
+    }
+
+    public GetOrdineResponse dtoToResponseGet(GetOrdineResponseDTO getOrineResponseDTO) {
+        GetOrdineResponse getOrdineResponse = new GetOrdineResponse();
+        getOrdineResponse.setCodiceOrdine(getOrineResponseDTO.getCodiceOrdine());
+        getOrdineResponse.setId(getOrineResponseDTO.getId());
+        getOrdineResponse.setNomeCliente(getOrineResponseDTO.getNomeCliente());
+        getOrdineResponse.setCognomeCliente(getOrineResponseDTO.getCognomeCliente());
+        getOrdineResponse.setEmailCliente(getOrineResponseDTO.getEmailCliente());
+        getOrdineResponse.setTelefonoCliente(getOrineResponseDTO.getTelefonoCliente());
+        getOrdineResponse.setIndirizzoSpedizione(getOrineResponseDTO.getIndirizzoSpedizione());
+        getOrdineResponse.setCittaSpedizione(getOrineResponseDTO.getCittaSpedizione());
+        getOrdineResponse.setCap(getOrineResponseDTO.getCap());
+        getOrdineResponse.setProdotto(getOrineResponseDTO.getProdotto());
+        getOrdineResponse.setQuantita(getOrineResponseDTO.getQuantita());
+        getOrdineResponse.setPrezzoUnitario(getOrineResponseDTO.getPrezzoUnitario());
+        getOrdineResponse.setTotale(getOrineResponseDTO.getTotale());
+        getOrdineResponse.setStato(getOrineResponseDTO.getStato());
+        getOrdineResponse.setDataOrdine(getOrineResponseDTO.getDataOrdine());
+        getOrdineResponse.setHttpStatus(getOrineResponseDTO.getHttpStatus());
+        return getOrdineResponse;
     }
 
     public CreateOrdineResponseDTO entityToDTO(OrdineEntity ordineEntity) {
