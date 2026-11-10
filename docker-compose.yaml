@@ -12,6 +12,7 @@ services:
 
     volumes:
       - dati-local_db:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
 
 volumes:
   dati-local_db:

@@ -2,10 +2,10 @@
 databaseChangeLog:
   - changeSet:
       id: 001
-      author: andrea
+      author: pippo
       changes:
         - createTable:
-            tableName: products
+            tableName: customer
             columns:
               - column:
                   name: id
@@ -14,7 +14,6 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
-
 
               - column:
                   name: name
