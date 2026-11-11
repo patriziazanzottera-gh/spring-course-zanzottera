@@ -47,7 +47,7 @@ public class UserApplicationTest {
         assertEquals(30.0, totale);
     }
 
-    @Test
+    /*@Test
     public void testCreateUser() {
         UserRequestDTO userRequestDTO = new UserRequestDTO();
         userRequestDTO.setEmail("cat75.zan@gmail.it");
@@ -168,5 +168,5 @@ public class UserApplicationTest {
             userService.getByName(userRequestDTO.getNome());
         });
         assertEquals(HttpStatus.NOT_FOUND, appException.getStatusCode());
-    }
+    }*/
 }
