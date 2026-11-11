@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -63,6 +64,14 @@ public class OrdineService {
         GetOrdineResponse getOrdineResponse = new GetOrdineResponse(entity, HttpStatus.OK);
         log.info("Ordine trovato {}",entity.getId());
         return ordineMapper.responseToDTOGet(getOrdineResponse);
+    }
+
+    public List<ListOrdineResponseDTO> getByStato(String stato) {
+
+        List<OrdineEntity> entities = ordineRepository.findByStato(stato).orElseThrow(()->new AppException("Nessun ordine trovato ", HttpStatus.NOT_FOUND));
+        ListOrdineResponse listOrdineResponse = new ListOrdineResponse(entities, HttpStatus.OK);
+        log.info("Trovato {}",entities.size() + " ordini");
+        return ordineMapper.responseToDTOList(listOrdineResponse);
     }
 
 }

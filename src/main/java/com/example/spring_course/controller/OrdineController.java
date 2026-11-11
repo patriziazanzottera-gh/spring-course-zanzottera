@@ -68,4 +68,12 @@ public class OrdineController {
         return ResponseEntity.status(getOrdineResponse.getHttpStatus()).body(getOrdineResponse);
     }
 
+    @GetMapping("/ordini/")
+    public ResponseEntity<OrdineResponseList> getOrdiniByStato(@RequestParam("stato") String stato) {
+        List<OrdineResponseListDTO> ordineResponseListDTO = service.getByStato(stato);
+        OrdineResponseList ordineResponseList = ordineMapper.dtoToResponseList(odineResponseDTO);
+
+        return ResponseEntity.status(ordineResponseListDTO.getHttpStatus()).body(ordineResponseListDTO);
+    }
+
 }
