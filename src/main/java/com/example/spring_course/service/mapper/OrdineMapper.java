@@ -3,15 +3,18 @@ package com.example.spring_course.service.mapper;
 import com.example.spring_course.model.CreateOrdineRequest;
 import com.example.spring_course.model.CreateOrdineResponse;
 import com.example.spring_course.model.GetOrdineResponse;
+import com.example.spring_course.model.ListOrdineResponse;
 import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.service.dto.CreateOrdineRequestDTO;
 import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
 import com.example.spring_course.service.dto.GetOrdineResponseDTO;
-import jakarta.validation.Valid;
+import com.example.spring_course.service.dto.ListOrdineResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class OrdineMapper {
 
@@ -106,24 +109,24 @@ public abstract class OrdineMapper {
         return createOrdineResponse;
     }
 
-    public GetOrdineResponse dtoToResponseGet(GetOrdineResponseDTO getOrineResponseDTO) {
+    public GetOrdineResponse dtoToResponseGet(GetOrdineResponseDTO getOrdineResponseDTO) {
         GetOrdineResponse getOrdineResponse = new GetOrdineResponse();
-        getOrdineResponse.setCodiceOrdine(getOrineResponseDTO.getCodiceOrdine());
-        getOrdineResponse.setId(getOrineResponseDTO.getId());
-        getOrdineResponse.setNomeCliente(getOrineResponseDTO.getNomeCliente());
-        getOrdineResponse.setCognomeCliente(getOrineResponseDTO.getCognomeCliente());
-        getOrdineResponse.setEmailCliente(getOrineResponseDTO.getEmailCliente());
-        getOrdineResponse.setTelefonoCliente(getOrineResponseDTO.getTelefonoCliente());
-        getOrdineResponse.setIndirizzoSpedizione(getOrineResponseDTO.getIndirizzoSpedizione());
-        getOrdineResponse.setCittaSpedizione(getOrineResponseDTO.getCittaSpedizione());
-        getOrdineResponse.setCap(getOrineResponseDTO.getCap());
-        getOrdineResponse.setProdotto(getOrineResponseDTO.getProdotto());
-        getOrdineResponse.setQuantita(getOrineResponseDTO.getQuantita());
-        getOrdineResponse.setPrezzoUnitario(getOrineResponseDTO.getPrezzoUnitario());
-        getOrdineResponse.setTotale(getOrineResponseDTO.getTotale());
-        getOrdineResponse.setStato(getOrineResponseDTO.getStato());
-        getOrdineResponse.setDataOrdine(getOrineResponseDTO.getDataOrdine());
-        getOrdineResponse.setHttpStatus(getOrineResponseDTO.getHttpStatus());
+        getOrdineResponse.setCodiceOrdine(getOrdineResponseDTO.getCodiceOrdine());
+        getOrdineResponse.setId(getOrdineResponseDTO.getId());
+        getOrdineResponse.setNomeCliente(getOrdineResponseDTO.getNomeCliente());
+        getOrdineResponse.setCognomeCliente(getOrdineResponseDTO.getCognomeCliente());
+        getOrdineResponse.setEmailCliente(getOrdineResponseDTO.getEmailCliente());
+        getOrdineResponse.setTelefonoCliente(getOrdineResponseDTO.getTelefonoCliente());
+        getOrdineResponse.setIndirizzoSpedizione(getOrdineResponseDTO.getIndirizzoSpedizione());
+        getOrdineResponse.setCittaSpedizione(getOrdineResponseDTO.getCittaSpedizione());
+        getOrdineResponse.setCap(getOrdineResponseDTO.getCap());
+        getOrdineResponse.setProdotto(getOrdineResponseDTO.getProdotto());
+        getOrdineResponse.setQuantita(getOrdineResponseDTO.getQuantita());
+        getOrdineResponse.setPrezzoUnitario(getOrdineResponseDTO.getPrezzoUnitario());
+        getOrdineResponse.setTotale(getOrdineResponseDTO.getTotale());
+        getOrdineResponse.setStato(getOrdineResponseDTO.getStato());
+        getOrdineResponse.setDataOrdine(getOrdineResponseDTO.getDataOrdine());
+        getOrdineResponse.setHttpStatus(getOrdineResponseDTO.getHttpStatus());
         return getOrdineResponse;
     }
 
@@ -186,4 +189,8 @@ public abstract class OrdineMapper {
         ordineEntity.setDataOrdine(ordineResponseDTO.getDataOrdine());
         return ordineEntity;
     }
+
+    public abstract ListOrdineResponse dtoToResponseList(ListOrdineResponseDTO listOrdineResponseDTO);
+    public abstract ListOrdineResponseDTO listOrdineResponseToListOrdineResponseDTO(OrdineEntity ordineEntity);
+
 }

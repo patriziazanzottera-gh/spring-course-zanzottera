@@ -3,6 +3,7 @@ package com.example.spring_course.controller;
 import com.example.spring_course.model.CreateOrdineRequest;
 import com.example.spring_course.model.CreateOrdineResponse;
 import com.example.spring_course.model.GetOrdineResponse;
+import com.example.spring_course.model.ListOrdineResponse;
 import com.example.spring_course.service.OrdineService;
 import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
 import com.example.spring_course.service.dto.GetOrdineResponseDTO;
@@ -17,9 +18,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -69,11 +74,14 @@ public class OrdineController {
     }
 
     @GetMapping("/ordini/")
-    public ResponseEntity<OrdineResponseList> getOrdiniByStato(@RequestParam("stato") String stato) {
-        List<OrdineResponseListDTO> ordineResponseListDTO = service.getByStato(stato);
-        OrdineResponseList ordineResponseList = ordineMapper.dtoToResponseList(odineResponseDTO);
+    public ResponseEntity<List<ListOrdineResponse>> getOrdiniByStato(@RequestParam("stato") String stato) {
 
-        return ResponseEntity.status(ordineResponseListDTO.getHttpStatus()).body(ordineResponseListDTO);
+        List<ListOrdineResponse> ordineResponseListDTO = service.getByStato(stato)
+                .stream()
+                .map(ordineMapper::dtoToResponseList)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(ordineResponseListDTO);
     }
 
 }
