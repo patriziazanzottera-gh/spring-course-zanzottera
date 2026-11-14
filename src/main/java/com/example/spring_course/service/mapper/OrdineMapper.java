@@ -5,10 +5,8 @@ import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.service.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
-import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class OrdineMapper {
 
@@ -31,5 +29,5 @@ public abstract class OrdineMapper {
     public abstract PatchStatoResponse dtoToResponsePatch(PatchStatoResponseDTO patchOrdineResponseDTO);
     public abstract ListOrdineResponseDTO listOrdineResponseToListOrdineResponseDTO(OrdineEntity ordineEntity);
     public abstract PatchStatoResponseDTO responseToDTOPatch(PatchStatoResponse patchOrdineResponse);
-
+    public abstract StatisticheStatoResponse dtoToResponseStatistiche(StatisticheStatoResponseDTO statisticheStatoResponseDTO);
 }

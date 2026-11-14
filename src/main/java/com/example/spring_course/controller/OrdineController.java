@@ -6,6 +6,7 @@ import com.example.spring_course.service.OrdineService;
 import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
 import com.example.spring_course.service.dto.GetOrdineResponseDTO;
 import com.example.spring_course.service.dto.PatchStatoResponseDTO;
+import com.example.spring_course.service.dto.StatisticheStatoResponseDTO;
 import com.example.spring_course.service.mapper.OrdineMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +18,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -75,12 +75,12 @@ public class OrdineController {
     @GetMapping("/ordini/")
     public ResponseEntity<List<ListOrdineResponse>> getOrdiniByStato(@RequestParam("stato") String stato) {
 
-        List<ListOrdineResponse> ordineResponseListDTO = service.getByStato(stato)
+        List<ListOrdineResponse> ordineResponseList = service.getByStato(stato)
                 .stream()
                 .map(ordineMapper::dtoToResponseList)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(ordineResponseListDTO);
+        return ResponseEntity.ok(ordineResponseList);
     }
 
     @PatchMapping("/ordini/{id}/stato")
@@ -90,4 +90,15 @@ public class OrdineController {
         PatchStatoResponse patchStatoResponse = ordineMapper.dtoToResponsePatch(patchStatoResponseDTO);
         return ResponseEntity.status(patchStatoResponse.getHttpStatus()).body(patchStatoResponse);
     }
+
+    @GetMapping("/ordini/statistiche/stato")
+    public ResponseEntity<List<StatisticheStatoResponse>> statisticheStato() {
+
+        List<StatisticheStatoResponse> statisticheStatoResponse = service.statisticheStato().stream()
+                .map(ordineMapper::dtoToResponseStatistiche)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(statisticheStatoResponse);
+    }
+
 }

@@ -3,7 +3,6 @@ package com.example.spring_course.service;
 import com.example.spring_course.exception.AppException;
 import com.example.spring_course.model.CreateOrdineResponse;
 import com.example.spring_course.model.GetOrdineResponse;
-import com.example.spring_course.model.ListOrdineResponse;
 import com.example.spring_course.model.PatchStatoResponse;
 import com.example.spring_course.repository.OrdineRepository;
 import com.example.spring_course.repository.model.OrdineEntity;
@@ -105,5 +104,16 @@ public class OrdineService {
             patchStatoResponse = new PatchStatoResponse(new OrdineEntity(), HttpStatus.CONFLICT);
         }
         return ordineMapper.responseToDTOPatch(patchStatoResponse);
+    }
+
+    public List<StatisticheStatoResponseDTO> statisticheStato() {
+
+        return ordineRepository.findNumeroOrdiniByStato()
+                .stream()
+                .map(s -> new StatisticheStatoResponseDTO(
+                        s.getNumeroOrdini(),
+                        s.getStato()
+                ))
+                .collect(Collectors.toList());
     }
 }

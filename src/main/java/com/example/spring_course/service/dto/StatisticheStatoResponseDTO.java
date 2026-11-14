@@ -1,19 +1,19 @@
 package com.example.spring_course.service.dto;
 
+import com.example.spring_course.repository.model.Stato;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseDTO {
+public class StatisticheStatoResponseDTO {
 
-    private String nome;
-    private String email;
-    private String indirizzo;
-    private int eta;
-    private String message;
-    private HttpStatus status;
+    private Long numeroOrdini;
+    private Stato stato;
+
 }

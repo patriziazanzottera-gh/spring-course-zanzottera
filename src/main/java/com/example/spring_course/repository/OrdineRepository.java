@@ -1,5 +1,6 @@
 package com.example.spring_course.repository;
 
+import com.example.spring_course.repository.model.OrdineCountProjection;
 import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.repository.model.Stato;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +16,13 @@ public interface OrdineRepository extends JpaRepository<OrdineEntity, Long> {
 
     Optional<OrdineEntity> findByCodiceOrdine(String codiceOrdine);
 
-    @Query(value = "SELECT count(id),stato FROM ordine WHERE stato = :stato GROUP BY stato", nativeQuery = true)
-    OrdineCountProjection findNumeroOrdiniByStato(@Param("stato")String stato);
+    @Query(value = """
+                SELECT COUNT(o.id) AS numeroOrdini,
+                       o.stato AS stato
+                FROM ordine o
+                GROUP BY o.stato
+                """, nativeQuery = true)
+    List<OrdineCountProjection> findNumeroOrdiniByStato();
 
     List<OrdineEntity> findByStato(Stato stato);
 
