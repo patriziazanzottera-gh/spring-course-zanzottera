@@ -1,12 +1,11 @@
 package com.example.spring_course.controller;
 
-import com.example.spring_course.model.CreateOrdineRequest;
-import com.example.spring_course.model.CreateOrdineResponse;
-import com.example.spring_course.model.GetOrdineResponse;
-import com.example.spring_course.model.ListOrdineResponse;
+import com.example.spring_course.model.*;
+import com.example.spring_course.repository.model.Stato;
 import com.example.spring_course.service.OrdineService;
 import com.example.spring_course.service.dto.CreateOrdineResponseDTO;
 import com.example.spring_course.service.dto.GetOrdineResponseDTO;
+import com.example.spring_course.service.dto.PatchStatoResponseDTO;
 import com.example.spring_course.service.mapper.OrdineMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -84,4 +83,11 @@ public class OrdineController {
         return ResponseEntity.ok(ordineResponseListDTO);
     }
 
+    @PatchMapping("/ordini/{id}/stato")
+    public ResponseEntity<PatchStatoResponse> patchStato(@PathVariable("id") Long id, @RequestBody Stato stato) {
+
+        PatchStatoResponseDTO patchStatoResponseDTO = service.patchStato(id, stato);
+        PatchStatoResponse patchStatoResponse = ordineMapper.dtoToResponsePatch(patchStatoResponseDTO);
+        return ResponseEntity.status(patchStatoResponse.getHttpStatus()).body(patchStatoResponse);
+    }
 }
