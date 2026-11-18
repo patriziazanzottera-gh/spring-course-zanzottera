@@ -1,6 +1,6 @@
 package com.example.spring_course.controller;
 
-import com.example.spring_course.model.ExternalUserResponse;
+import com.example.spring_course.controller.model.ExternalUserResponse;
 import com.example.spring_course.service.ExternalUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

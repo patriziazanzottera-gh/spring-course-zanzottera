@@ -1,7 +1,7 @@
 package com.example.spring_course.controller;
 
-import com.example.spring_course.model.OrdineRequest;
-import com.example.spring_course.model.OrdineResponse;
+import com.example.spring_course.controller.model.OrdineRequest;
+import com.example.spring_course.controller.model.OrdineResponse;
 import com.example.spring_course.service.OrdineService;
 import com.example.spring_course.service.dto.OrdineResponseDTO;
 import com.example.spring_course.service.mapper.OrdineMapper;

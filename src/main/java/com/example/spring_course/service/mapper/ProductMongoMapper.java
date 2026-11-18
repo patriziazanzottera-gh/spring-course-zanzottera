@@ -1,7 +1,7 @@
 package com.example.spring_course.service.mapper;
 
-import com.example.spring_course.model.ProductRequest;
-import com.example.spring_course.model.ProductResponse;
+import com.example.spring_course.controller.model.ProductRequest;
+import com.example.spring_course.controller.model.ProductResponse;
 import com.example.spring_course.repository.model.ProductDocument;
 import org.springframework.stereotype.Component;
 

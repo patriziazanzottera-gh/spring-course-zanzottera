@@ -1,20 +1,10 @@
 package com.example.spring_course.service;
 
-import com.example.spring_course.exception.AppException;
-import com.example.spring_course.model.OrdineResponse;
-import com.example.spring_course.model.ProductRequest;
-import com.example.spring_course.model.ProductResponse;
-import com.example.spring_course.repository.OrdineRepository;
+import com.example.spring_course.controller.model.ProductRequest;
+import com.example.spring_course.controller.model.ProductResponse;
 import com.example.spring_course.repository.ProductMongoRepository;
-import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.repository.model.ProductDocument;
-import com.example.spring_course.service.dto.OrdineRequestDTO;
-import com.example.spring_course.service.dto.OrdineResponseDTO;
-import com.example.spring_course.service.mapper.OrdineMapper;
 import com.example.spring_course.service.mapper.ProductMongoMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 

@@ -1,11 +1,10 @@
 package com.example.spring_course.service.mapper;
 
-import com.example.spring_course.model.UserRequest;
-import com.example.spring_course.model.UserResponse;
+import com.example.spring_course.controller.model.UserRequest;
+import com.example.spring_course.controller.model.UserResponse;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.dto.UserRequestDTO;
 import com.example.spring_course.service.dto.UserResponseDTO;
-import org.hibernate.mapping.UserDefinedType;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

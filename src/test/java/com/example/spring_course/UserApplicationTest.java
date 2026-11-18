@@ -1,30 +1,17 @@
 package com.example.spring_course;
 
-import com.example.spring_course.exception.AppException;
-import com.example.spring_course.model.UserResponse;
 import com.example.spring_course.repository.UsersRepository;
-import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.UserService;
-import com.example.spring_course.service.dto.UserRequestDTO;
-import com.example.spring_course.service.dto.UserResponseDTO;
 import com.example.spring_course.service.mapper.MapperUserDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Random;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)

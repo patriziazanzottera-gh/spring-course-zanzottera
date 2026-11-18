@@ -1,5 +1,8 @@
 package com.example.spring_course.config;
 
+import com.example.spring_course.repository.UserAccountRepository;
+import com.example.spring_course.repository.model.UserAccount;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -22,6 +25,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/register").permitAll()
                 .requestMatchers("/api/catalog/products/public/**").permitAll()
                 .requestMatchers("/api/catalog/products/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/catalog/products/user/**").hasAnyRole("USER","ADMIN")
@@ -36,8 +40,23 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
+    CommandLineRunner createAdmin(
+            UserAccountRepository repository,
+            PasswordEncoder passwordEncoder) {
+        return args -> {
+            if (!repository.existsByUsername("admin")) {
+                UserAccount admin = new UserAccount(
+                     "admin",
+                     passwordEncoder.encode("admin123"),
+                     "ADMIN"
+                );
+                repository.save(admin);
+            }
+        };
+    }
+
+    /*@Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
 
         UserDetails user = User.builder()
@@ -53,5 +72,5 @@ public class SecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(user, admin);
-    }
+    }*/
 }

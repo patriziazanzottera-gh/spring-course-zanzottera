@@ -1,7 +1,7 @@
 package com.example.spring_course.service;
 
 import com.example.spring_course.exception.AppException;
-import com.example.spring_course.model.UserResponse;
+import com.example.spring_course.controller.model.UserResponse;
 import com.example.spring_course.repository.UsersRepository;
 import com.example.spring_course.repository.model.UserEntity;
 import com.example.spring_course.service.dto.UserRequestDTO;

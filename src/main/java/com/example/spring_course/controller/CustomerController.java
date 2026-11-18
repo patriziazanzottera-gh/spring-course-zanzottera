@@ -1,9 +1,7 @@
 package com.example.spring_course.controller;
 
-import com.example.spring_course.model.CustomerResponse;
-import com.example.spring_course.model.UserResponse;
+import com.example.spring_course.controller.model.CustomerResponse;
 import com.example.spring_course.service.CustomerService;
-import com.example.spring_course.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

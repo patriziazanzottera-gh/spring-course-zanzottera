@@ -1,4 +1,4 @@
-package com.example.spring_course.model;
+package com.example.spring_course.controller.model;
 
 import com.example.spring_course.repository.model.OrderEntity;
 import jakarta.persistence.*;

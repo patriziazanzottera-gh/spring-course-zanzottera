@@ -1,7 +1,7 @@
 package com.example.spring_course.service;
 
 import com.example.spring_course.exception.AppException;
-import com.example.spring_course.model.OrdineResponse;
+import com.example.spring_course.controller.model.OrdineResponse;
 import com.example.spring_course.repository.OrdineRepository;
 import com.example.spring_course.repository.model.OrdineEntity;
 import com.example.spring_course.service.dto.OrdineRequestDTO;
@@ -11,9 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
