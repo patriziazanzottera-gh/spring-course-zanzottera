@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +65,45 @@ public class OrdineController {
         return ResponseEntity.status(userResponse.getHttpStatus()).body(userResponse);
     }
 
+    @Operation(summary = "Fornito un id, recupera un ordine")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200"
+                    , description = "OK"
+                    , content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                                    , schema = @Schema(implementation = GetOrdineResponse.class)
+                                    , examples = @ExampleObject("""
+                                        {
+                                                "nomeCliente":"Tizio",
+                                                "cognomeCliente":"Caio",
+                                                "emailCliente":"tizio.caio@teleport.com",
+                                                "telefonoCliente":"0234567",
+                                                "indirizzoSpedizione":"Via dei Matti, 0",
+                                                "cittaSpedizione":"Canicatti",
+                                                "cap":"20014",
+                                                "prodotto":"Marmellata di lamponi",
+                                                "quantita":"600",
+                                                "prezzoUnitario":"2"
+                                                "totale":"1200"
+                                        }
+                                    """)
+            )),
+            @ApiResponse(responseCode = "400"
+                    , description = "NOT_FOUND"
+                    , content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                                    , schema = @Schema(implementation = GetOrdineResponse.class)
+                                    , examples = @ExampleObject("""
+                                        {
+                                           "appErrorCode": "Not Found",
+                                           "appErrorMessage": "Ordine 1488 non trovato ",
+                                           "httpStatusCode": "404 NOT_FOUND",
+                                           "path": "/api/ordini/1488",
+                                           "timestamp": "2026-11-21T11:45:57.3921928"
+                                         }
+                                    """)
+            ))
+    })
     @GetMapping("/ordini/{id}")
     public ResponseEntity<GetOrdineResponse> getOrdineById(@PathVariable("id") Long id) {
         GetOrdineResponseDTO getOrdineResponseDTO = service.getById(id);
@@ -84,7 +124,7 @@ public class OrdineController {
     }
 
     @PatchMapping("/ordini/{id}/stato")
-    public ResponseEntity<PatchStatoResponse> patchStato(@PathVariable("id") Long id, @RequestBody Stato stato) {
+    public ResponseEntity<PatchStatoResponse> patchStato(@PathVariable("id") Long id, @RequestBody String stato) {
 
         PatchStatoResponseDTO patchStatoResponseDTO = service.patchStato(id, stato);
         PatchStatoResponse patchStatoResponse = ordineMapper.dtoToResponsePatch(patchStatoResponseDTO);

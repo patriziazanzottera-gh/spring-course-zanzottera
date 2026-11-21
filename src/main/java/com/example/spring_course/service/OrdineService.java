@@ -70,14 +70,19 @@ public class OrdineService {
     }
 
     public List<ListOrdineResponseDTO> getByStato(String statoStr) {
-
+        Stato stato = null;
         List<OrdineEntity> entities = null;
         //se lo stato non viene precisato resituisco tutto
         if (statoStr == null || statoStr.isEmpty()) {
             entities = ordineRepository.findAll();
         } else {
-            entities = ordineRepository.findByStato(Stato.valueOf(statoStr));
+            try {
+                stato = Stato.valueOf(statoStr);
+            } catch (IllegalArgumentException e) {
+                throw new AppException("Stato non ammesso", HttpStatus.BAD_REQUEST);
+            }
         }
+
         if (entities.isEmpty()) {
             log.info("Nessun Ordine trovato per questo stato {}", statoStr);
             return Collections.emptyList();
@@ -89,16 +94,21 @@ public class OrdineService {
                 .collect(Collectors.toList());
     }
 
-    public PatchStatoResponseDTO patchStato(@Positive Long id, @NotNull Stato stato) {
+    public PatchStatoResponseDTO patchStato(@Positive Long id, @NotNull String stato) {
 
         PatchStatoResponse patchStatoResponse = null;
-        if (stato.equals(Stato.IN_LAVORAZIONE) || stato.equals(Stato.SPEDITO) || stato.equals(Stato.ANNULLATO) ) {
+        try {
+            Stato.valueOf(stato);
+        } catch (IllegalArgumentException e) {
+            throw new AppException("Stato non ammesso", HttpStatus.BAD_REQUEST);
+        }
+        if (stato.equals(Stato.IN_LAVORAZIONE.name()) || stato.equals(Stato.SPEDITO.name()) || stato.equals(Stato.ANNULLATO.name()) ) {
             OrdineEntity entity = ordineRepository.findById(id).orElseThrow(()->new AppException("Ordine " + id + " non trovato ", HttpStatus.NOT_FOUND));
-            if ( ((entity.getStato().equals(Stato.RICEVUTO) && stato.equals(Stato.IN_LAVORAZIONE))) ||
-                    ((entity.getStato().equals(Stato.IN_LAVORAZIONE) && (stato.equals(Stato.SPEDITO) || stato.equals(Stato.ANNULLATO)))) ) {
-                int updated= ordineRepository.patchStato(id, stato.name());
+            if ( ((entity.getStato().equals(Stato.RICEVUTO) && stato.equals(Stato.IN_LAVORAZIONE.name()))) ||
+                    ((entity.getStato().equals(Stato.IN_LAVORAZIONE)) && (stato.equals(Stato.SPEDITO.name()) || stato.equals(Stato.ANNULLATO.name()))) ) {
+                int updated= ordineRepository.patchStato(id, stato);
                 if (updated>=1) {
-                    patchStatoResponse = new PatchStatoResponse(entity, stato, HttpStatus.OK);
+                    patchStatoResponse = new PatchStatoResponse(entity, Stato.valueOf(stato), HttpStatus.OK);
                     log.info("Ordine trovato {}",entity.getId() + "Nuovo stato: " + stato);
                 } else {
                     //l'id esiste, controllo già fatto, se mi restituisce 0 è andato male Ben Afflleck
