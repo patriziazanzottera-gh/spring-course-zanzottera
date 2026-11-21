@@ -81,6 +81,7 @@ public class OrdineService {
             } catch (IllegalArgumentException e) {
                 throw new AppException("Stato non ammesso", HttpStatus.BAD_REQUEST);
             }
+            entities = ordineRepository.findByStato(stato);
         }
 
         if (entities.isEmpty()) {
