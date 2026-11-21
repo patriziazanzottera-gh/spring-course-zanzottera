@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,9 +71,16 @@ public class OrdineService {
 
     public List<ListOrdineResponseDTO> getByStato(String statoStr) {
 
-        List<OrdineEntity> entities = ordineRepository.findByStato(Stato.valueOf(statoStr));
-        if (entities.isEmpty()) {
+        List<OrdineEntity> entities = null;
+        //se lo stato non viene precisato resituisco tutto
+        if (statoStr == null || statoStr.isEmpty()) {
             entities = ordineRepository.findAll();
+        } else {
+            entities = ordineRepository.findByStato(Stato.valueOf(statoStr));
+        }
+        if (entities.isEmpty()) {
+            log.info("Nessun Ordine trovato per questo stato {}", statoStr);
+            return Collections.emptyList();
         }
 
         log.info("Trovato {}",entities.size() + " ordini");
