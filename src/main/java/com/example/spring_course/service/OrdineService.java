@@ -98,7 +98,7 @@ public class OrdineService {
                     ((entity.getStato().equals(Stato.IN_LAVORAZIONE) && (stato.equals(Stato.SPEDITO) || stato.equals(Stato.ANNULLATO)))) ) {
                 int updated= ordineRepository.patchStato(id, stato.name());
                 if (updated>=1) {
-                    patchStatoResponse = new PatchStatoResponse(entity, HttpStatus.OK);
+                    patchStatoResponse = new PatchStatoResponse(entity, stato, HttpStatus.OK);
                     log.info("Ordine trovato {}",entity.getId() + "Nuovo stato: " + stato);
                 } else {
                     //l'id esiste, controllo già fatto, se mi restituisce 0 è andato male Ben Afflleck

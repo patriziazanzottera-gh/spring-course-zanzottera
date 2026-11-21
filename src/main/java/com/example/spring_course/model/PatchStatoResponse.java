@@ -32,7 +32,6 @@ public class PatchStatoResponse {
 
     private HttpStatus httpStatus;
 
-
     public PatchStatoResponse(OrdineEntity ordineEntity, HttpStatus httpStatusPar) {
 
         this.id=ordineEntity.getId();
@@ -48,7 +47,27 @@ public class PatchStatoResponse {
         this.quantita = ordineEntity.getQuantita();
         this.prezzoUnitario = ordineEntity.getPrezzoUnitario();
         this.totale = ordineEntity.getTotale();
-        this.stato = ordineEntity.getStato();
+        this.stato = ordineEntity.getStato();;
+        this.dataOrdine = ordineEntity.getDataOrdine();
+        this.httpStatus=httpStatusPar;
+    }
+
+    public PatchStatoResponse(OrdineEntity ordineEntity, Stato stato, HttpStatus httpStatusPar) {
+
+        this.id=ordineEntity.getId();
+        this.codiceOrdine = ordineEntity.getCodiceOrdine();
+        this.nomeCliente = ordineEntity.getNomeCliente();
+        this.cognomeCliente = ordineEntity.getCognomeCliente();
+        this.emailCliente = ordineEntity.getEmailCliente();
+        this.telefonoCliente = ordineEntity.getTelefonoCliente();
+        this.indirizzoSpedizione = ordineEntity.getIndirizzoSpedizione();
+        this.cittaSpedizione = ordineEntity.getCittaSpedizione();
+        this.cap = ordineEntity.getCap();
+        this.prodotto = ordineEntity.getProdotto();
+        this.quantita = ordineEntity.getQuantita();
+        this.prezzoUnitario = ordineEntity.getPrezzoUnitario();
+        this.totale = ordineEntity.getTotale();
+        this.stato = stato;
         this.dataOrdine = ordineEntity.getDataOrdine();
         this.httpStatus=httpStatusPar;
     }
