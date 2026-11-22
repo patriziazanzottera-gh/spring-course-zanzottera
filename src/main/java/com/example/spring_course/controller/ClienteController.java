@@ -3,6 +3,7 @@ package com.example.spring_course.controller;
 import com.example.spring_course.model.*;
 import com.example.spring_course.service.ClienteService;
 import com.example.spring_course.service.dto.CreateClienteResponseDTO;
+import com.example.spring_course.service.dto.GetClienteResponseDTO;
 import com.example.spring_course.service.mapper.ClienteMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +34,7 @@ public class ClienteController {
     private final ClienteMapper clienteMapper;
     private final ClienteService service;
 
-    @Operation(summary = "crea un nuovo cliente")
+    @Operation(summary = "Registra un cliente")
     @ApiResponse(responseCode = "201"
             , description = "Created"
             , content = @Content(
@@ -57,27 +58,24 @@ public class ClienteController {
         CreateClienteResponse clienteResponse = clienteMapper.dtoToResponse(clienteResponseDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteResponse);
     }
-/*
-    @Operation(summary = "Fornito un id, recupera un ordine")
+
+    @Operation(summary = "Recupera un cliente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200"
                     , description = "OK"
                     , content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE
-                                    , schema = @Schema(implementation = GetOrdineResponse.class)
+                                    , schema = @Schema(implementation = GetClienteResponse.class)
                                     , examples = @ExampleObject("""
                                         {
-                                                "nomeCliente":"Tizio",
-                                                "cognomeCliente":"Caio",
-                                                "emailCliente":"tizio.caio@teleport.com",
-                                                "telefonoCliente":"0234567",
-                                                "indirizzoSpedizione":"Via dei Matti, 0",
-                                                "cittaSpedizione":"Canicatti",
-                                                "cap":"20014",
-                                                "prodotto":"Marmellata di lamponi",
-                                                "quantita":"600",
-                                                "prezzoUnitario":"2"
-                                                "totale":"1200"
+                                               "id": 5,
+                                               "nome": "Tizio",
+                                               "cognome": "Rosa",
+                                               "email": "tizio.rosa@teleport.com",
+                                               "telefono": "0234567",
+                                               "indirizzo": "Via dei Noiosi, 0",
+                                               "citta": "Pisa",
+                                               "cap": "20317"
                                         }
                                     """)
             )),
@@ -85,26 +83,26 @@ public class ClienteController {
                     , description = "NOT_FOUND"
                     , content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE
-                                    , schema = @Schema(implementation = GetOrdineResponse.class)
+                                    , schema = @Schema(implementation = GetClienteResponse.class)
                                     , examples = @ExampleObject("""
                                         {
                                            "appErrorCode": "Not Found",
-                                           "appErrorMessage": "Ordine 1488 non trovato ",
+                                           "appErrorMessage": "Cliente tizio.caio@gmail.it non trovato ",
                                            "httpStatusCode": "404 NOT_FOUND",
-                                           "path": "/api/ordini/1488",
+                                           "path": "/api/clienti/1488",
                                            "timestamp": "2026-11-21T11:45:57.3921928"
                                          }
                                     """)
             ))
     })
-    @GetMapping("/ordini/{id}")
-    public ResponseEntity<GetOrdineResponse> getOrdineById(@PathVariable("id") Long id) {
-        GetOrdineResponseDTO getOrdineResponseDTO = service.getById(id);
-        GetOrdineResponse getOrdineResponse = ordineMapper.dtoToResponseGet(getOrdineResponseDTO);
+    @GetMapping("/clienti/{id}")
+    public ResponseEntity<GetClienteResponse> getClienteById(@PathVariable("id") Long id) {
+        GetClienteResponseDTO getClienteResponseDTO = service.getById(id);
+        GetClienteResponse getClienteResponse = clienteMapper.dtoToGetResponse(getClienteResponseDTO);
 
-        return ResponseEntity.status(getOrdineResponse.getHttpStatus()).body(getOrdineResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(getClienteResponse);
     }
-
+/*
     @Operation(summary = "Fornito uno stato, recupera la lista degli ordini")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200"

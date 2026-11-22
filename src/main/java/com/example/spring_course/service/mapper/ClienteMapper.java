@@ -11,7 +11,9 @@ public abstract class ClienteMapper {
 
     public abstract CreateClienteRequestDTO toRequestDTO (CreateClienteRequest clienteRequest);
     public abstract CreateClienteResponse dtoToResponse (CreateClienteResponseDTO clienteResponseDTO);
+    public abstract GetClienteResponse dtoToGetResponse (GetClienteResponseDTO clienteResponseDTO);
     public abstract ClienteEntity dtoToEntity (CreateClienteRequestDTO clienteRequestDTO);
     public abstract CreateClienteResponseDTO entityToDTO (ClienteEntity clienteEntity);
+    public abstract GetClienteResponseDTO entityToDTOGet (ClienteEntity clientEntity);
 
 }

@@ -2,6 +2,7 @@ package com.example.spring_course.service;
 
 import com.example.spring_course.exception.AppException;
 import com.example.spring_course.model.CreateClienteResponse;
+import com.example.spring_course.model.GetClienteResponse;
 import com.example.spring_course.repository.ClienteRepository;
 import com.example.spring_course.repository.model.ClienteEntity;
 import com.example.spring_course.service.dto.*;
@@ -35,14 +36,13 @@ public class ClienteService {
         return clienteMapper.entityToDTO(clienteEntity);
     }
 
-   /* public GetOrdineResponseDTO getById(Long id) {
+    public GetClienteResponseDTO getById(Long id) {
 
-        OrdineEntity entity = ordineRepository.findById(id).orElseThrow(()->new AppException("Ordine " + id + " non trovato ", HttpStatus.NOT_FOUND));
-        GetOrdineResponse getOrdineResponse = new GetOrdineResponse(entity, HttpStatus.OK);
-        log.info("Ordine trovato {}",entity.getId());
-        return ordineMapper.responseToDTOGet(getOrdineResponse);
+        ClienteEntity entity = clienteRepository.findById(id).orElseThrow(()->new AppException("Cliente " + id + " non trovato ", HttpStatus.NOT_FOUND));
+        log.info("Cliente trovato {}",entity.getId());
+        return clienteMapper.entityToDTOGet(entity);
     }
-
+/*
     public ResponseEntity<List<ListOrdineResponseDTO>> getByStato(String statoStr) {
         Stato stato = null;
         List<OrdineEntity> entities = null;
