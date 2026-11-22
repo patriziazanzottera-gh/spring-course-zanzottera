@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -69,7 +70,7 @@ public class OrdineService {
         return ordineMapper.responseToDTOGet(getOrdineResponse);
     }
 
-    public List<ListOrdineResponseDTO> getByStato(String statoStr) {
+    public ResponseEntity<List<ListOrdineResponseDTO>> getByStato(String statoStr) {
         Stato stato = null;
         List<OrdineEntity> entities = null;
         //se lo stato non viene precisato resituisco tutto
@@ -86,13 +87,13 @@ public class OrdineService {
 
         if (entities.isEmpty()) {
             log.info("Nessun Ordine trovato per questo stato {}", statoStr);
-            return Collections.emptyList();
+            ResponseEntity.ok(Collections.emptyList());
         }
 
         log.info("Trovato {}",entities.size() + " ordini");
-        return entities.stream()
+        return ResponseEntity.ok(entities.stream()
                 .map(ordineMapper::listOrdineResponseToListOrdineResponseDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     public PatchStatoResponseDTO patchStato(@Positive Long id, @NotNull String stato) {
