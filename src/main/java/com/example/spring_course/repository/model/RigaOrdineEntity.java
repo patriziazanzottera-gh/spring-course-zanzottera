@@ -39,7 +39,7 @@ public class RigaOrdineEntity {
     @Positive
     private Double totaleRiga;
 
-   /* @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDINE_ID", nullable = false)
-    private OrdineEntity ordine;*/
+    private OrdineEntity ordine;
 }

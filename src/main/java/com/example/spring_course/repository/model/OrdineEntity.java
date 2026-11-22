@@ -34,13 +34,13 @@ public class OrdineEntity {
     @Column(name="STATO")
     private Stato stato;
 
-   /* @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENTE_ID", nullable = false)
     private ClienteEntity cliente;
 
     @OneToMany(mappedBy = "ordine", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @NotEmpty(message = "L'ordine deve contenere almeno una riga d'ordine")
-    private List<RigaOrdineEntity> rigaOrdine;*/
+    private List<RigaOrdineEntity> rigaOrdine;
 }
 
 

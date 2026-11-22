@@ -3,7 +3,8 @@ package com.example.spring_course.repository.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import org.hibernate.validator.constraints.UniqueElements;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -16,7 +17,7 @@ public class ClienteEntity {
 
     @NotNull
     @Column(name="NOME", length = 30)
-    @Size(min=20, max=30, message="Il campo può essere composto da un min di 20 ad un massimo di 30 caratteri")
+    @Size(min=2, max=30, message="Il campo può essere composto da un min di 2 ad un massimo di 30 caratteri")
     private String nome;
 
     @NotNull
@@ -26,7 +27,6 @@ public class ClienteEntity {
 
     @NotNull
     @Email
-    @UniqueElements
     @Column(name="EMAIL", length = 100)
     @Size(max=100, message="Il campo non può superare 100 caratteri")
     private String email;
@@ -48,5 +48,7 @@ public class ClienteEntity {
     @Size(min=5, max=5, message="Il campo deve essere composto esattamente da 5 caratteri")
     private String cap;
 
+    @OneToMany(mappedBy = "cliente")
+    private List<OrdineEntity> ordini;
 }
 
