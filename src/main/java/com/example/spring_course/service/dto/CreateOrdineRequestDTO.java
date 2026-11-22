@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class CreateOrdineRequestDTO {
 
     private String codiceOrdine;
-    private String nomeCliente;
+    /*private String nomeCliente;
     private String cognomeCliente;
     private String emailCliente;
     private String telefonoCliente;
@@ -18,7 +18,7 @@ public class CreateOrdineRequestDTO {
     private String cap;
     private String prodotto;
     private Integer quantita;
-    private Double prezzoUnitario;
+    private Double prezzoUnitario;*/
     private Double totale;
     private Stato stato;
     private LocalDateTime dataOrdine;

@@ -3,13 +3,56 @@ package com.example.spring_course.repository.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 @Entity
 @Data
 @Table(name="Ordine")
+public class OrdineEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Column(name="CODICE_ORDINE")
+    private String codiceOrdine;
+
+    @NotNull
+    @Column(name="DATA_ORDINE")
+    private LocalDateTime dataOrdine;
+
+    @Column(name="TOTALE")
+    @Positive
+    private Double totale;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name="STATO")
+    private Stato stato;
+
+   /* @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLIENTE_ID", nullable = false)
+    private ClienteEntity cliente;
+
+    @OneToMany(mappedBy = "ordine", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @NotEmpty(message = "L'ordine deve contenere almeno una riga d'ordine")
+    private List<RigaOrdineEntity> rigaOrdine;*/
+}
+
+
+
+/*
+era così
+
+
+
+@Entity
+@Data
+@Table(name="OrdineOld")
 public class OrdineEntity {
 
     @Id
@@ -86,4 +129,7 @@ public class OrdineEntity {
     @Column(name="DATA_ORDINE")
     private LocalDateTime dataOrdine;
 }
+
+
+ */
 

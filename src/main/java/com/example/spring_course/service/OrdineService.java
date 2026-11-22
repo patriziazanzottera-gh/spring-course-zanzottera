@@ -57,7 +57,7 @@ public class OrdineService {
 
         ordineEntity = ordineRepository.save(ordineEntity);
         log.info("Nessun ordine trovato, lo creo {}",ordineEntity.getId());
-        CreateOrdineResponse ordineResponse = new CreateOrdineResponse(ordineEntity, HttpStatus.CREATED);
+        CreateOrdineResponse ordineResponse = new CreateOrdineResponse(ordineEntity);
 
         return ordineMapper.responseToDTO(ordineResponse);
     }
@@ -110,18 +110,18 @@ public class OrdineService {
                     ((entity.getStato().equals(Stato.IN_LAVORAZIONE)) && (stato.equals(Stato.SPEDITO.name()) || stato.equals(Stato.ANNULLATO.name()))) ) {
                 int updated= ordineRepository.patchStato(id, stato);
                 if (updated>=1) {
-                    patchStatoResponse = new PatchStatoResponse(entity, Stato.valueOf(stato), HttpStatus.OK);
+                    patchStatoResponse = new PatchStatoResponse(entity, Stato.valueOf(stato));
                     log.info("Ordine trovato {}",entity.getId() + "Nuovo stato: " + stato);
                 } else {
-                    //l'id esiste, controllo già fatto, se mi restituisce 0 è andato male Ben Afflleck
-                    patchStatoResponse = new PatchStatoResponse(new OrdineEntity(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    //l'id esiste, controllo già fatto, se mi restituisce 0 è andato male
+                    throw new AppException("Ordine " + id + " non modificato, errore interno ", HttpStatus.INTERNAL_SERVER_ERROR);
                 }
 
             } else {
-                patchStatoResponse = new PatchStatoResponse(new OrdineEntity(), HttpStatus.CONFLICT);
+                throw new AppException("Ordine " + id + " non modificato, stato non ammesso ", HttpStatus.CONFLICT);
             }
         } else {
-            patchStatoResponse = new PatchStatoResponse(new OrdineEntity(), HttpStatus.CONFLICT);
+            throw new AppException("Ordine " + id + " non modificato, stato non esistente ", HttpStatus.CONFLICT);
         }
         return ordineMapper.responseToDTOPatch(patchStatoResponse);
     }

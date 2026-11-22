@@ -15,7 +15,7 @@ public class CreateOrdineResponseDTO {
 
     private Long id;
     private String codiceOrdine;
-    private String nomeCliente;
+ /*   private String nomeCliente;
     private String cognomeCliente;
     private String emailCliente;
     private String telefonoCliente;
@@ -24,9 +24,8 @@ public class CreateOrdineResponseDTO {
     private String cap;
     private String prodotto;
     private Integer quantita;
-    private Double prezzoUnitario;
+    private Double prezzoUnitario;*/
     private Double totale;
     private Stato stato;
     private LocalDateTime dataOrdine;
-    private HttpStatus httpStatus;
 }

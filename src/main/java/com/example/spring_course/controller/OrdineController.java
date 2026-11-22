@@ -62,7 +62,7 @@ public class OrdineController {
     public ResponseEntity<CreateOrdineResponse> createOrdine(@Valid @RequestBody CreateOrdineRequest ordineRequest) {
         CreateOrdineResponseDTO ordineResponseDTO = service.createOrdine(ordineMapper.toRequestDTO(ordineRequest));
         CreateOrdineResponse userResponse = ordineMapper.dtoToResponse(ordineResponseDTO);
-        return ResponseEntity.status(userResponse.getHttpStatus()).body(userResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
     @Operation(summary = "Fornito un id, recupera un ordine")
@@ -408,7 +408,7 @@ public class OrdineController {
 
         PatchStatoResponseDTO patchStatoResponseDTO = service.patchStato(id, stato);
         PatchStatoResponse patchStatoResponse = ordineMapper.dtoToResponsePatch(patchStatoResponseDTO);
-        return ResponseEntity.status(patchStatoResponse.getHttpStatus()).body(patchStatoResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(patchStatoResponse);
     }
 
     @Operation(summary = "Per ogni stato restituisce il numero di ordini")

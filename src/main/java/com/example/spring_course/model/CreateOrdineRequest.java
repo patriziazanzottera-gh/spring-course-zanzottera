@@ -16,7 +16,7 @@ public class CreateOrdineRequest {
 
     private String codiceOrdine;
 
-    @NotNull(message = "Il nome del cliente deve essere valorizzato")
+ /*   @NotNull(message = "Il nome del cliente deve essere valorizzato")
     @Pattern(
             regexp = "^.{2,50}$",
             message = "Il nomeCliente deve contenere da 2 a 50 caratteri"
@@ -75,7 +75,7 @@ public class CreateOrdineRequest {
 
     @NotNull(message = "Il prezzo unitario deve essere valorizzato")
     @Positive
-    private Double prezzoUnitario;
+    private Double prezzoUnitario;*/
 
     private Double totale;
 

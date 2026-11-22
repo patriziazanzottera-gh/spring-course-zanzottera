@@ -17,7 +17,7 @@ public class GetOrdineResponse {
     private Long id;
     private String codiceOrdine;
     private LocalDateTime dataOrdine;
-    private String nomeCliente;
+    /*private String nomeCliente;
     private String cognomeCliente;
     private String emailCliente;
     private String telefonoCliente;
@@ -26,7 +26,7 @@ public class GetOrdineResponse {
     private String cap;
     private String prodotto;
     private Integer quantita;
-    private Double prezzoUnitario;
+    private Double prezzoUnitario;*/
     private Double totale;
     private Stato stato;
 
@@ -37,7 +37,7 @@ public class GetOrdineResponse {
 
         this.id=ordineEntity.getId();
         this.codiceOrdine = ordineEntity.getCodiceOrdine();
-        this.nomeCliente = ordineEntity.getNomeCliente();
+       /* this.nomeCliente = ordineEntity.getNomeCliente();
         this.cognomeCliente = ordineEntity.getCognomeCliente();
         this.emailCliente = ordineEntity.getEmailCliente();
         this.telefonoCliente = ordineEntity.getTelefonoCliente();
@@ -46,7 +46,7 @@ public class GetOrdineResponse {
         this.cap = ordineEntity.getCap();
         this.prodotto = ordineEntity.getProdotto();
         this.quantita = ordineEntity.getQuantita();
-        this.prezzoUnitario = ordineEntity.getPrezzoUnitario();
+        this.prezzoUnitario = ordineEntity.getPrezzoUnitario();*/
         this.totale = ordineEntity.getTotale();
         this.stato = ordineEntity.getStato();
         this.dataOrdine = ordineEntity.getDataOrdine();
