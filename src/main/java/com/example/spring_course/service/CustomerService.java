@@ -106,12 +106,10 @@ public class CustomerService {
                 )
                 .toList();
 
-
         customerEntity.setName(request.getName());
         customerEntity.setEmail(request.getEmail());
         //customerEntity.setOrders(orders);
         customerEntity = repository.save(customerEntity);
-
         return mapper.entityToResponse(customerEntity);
     }
 
@@ -125,7 +123,6 @@ public class CustomerService {
         }
         repository.deleteById(id);
     }
-
 }
 
 
