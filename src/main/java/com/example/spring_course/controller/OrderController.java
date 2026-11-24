@@ -45,6 +45,11 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
     }
 
+    @GetMapping("/ordini/{id}")
+    public OrderResponse getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
     @PostMapping("/ordini/{id}")
     public OrderResponse update(@PathVariable Long id, @Valid @RequestBody OrderRequest request) {
         return service.update(id, request);

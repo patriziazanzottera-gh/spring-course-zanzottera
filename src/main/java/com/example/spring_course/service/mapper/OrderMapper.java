@@ -22,6 +22,7 @@ public abstract class OrderMapper {
         if (ordineResponseDTO.getCustomer() != null) {
             customerResponse.setId(ordineResponseDTO.getCustomer().getId());
             customerResponse.setName(ordineResponseDTO.getCustomer().getName());
+            customerResponse.setEmail(ordineResponseDTO.getCustomer().getEmail());
         }
         return new OrderResponse(ordineResponseDTO.getId(), ordineResponseDTO.getTotal(), customerResponse);
     }
@@ -31,6 +32,7 @@ public abstract class OrderMapper {
         if (ordineRequest.getCustomer() != null) {
             customerRequestDTO.setId(ordineRequest.getCustomer().getId());
             customerRequestDTO.setName(ordineRequest.getCustomer().getName());
+            customerRequestDTO.setEmail(ordineRequest.getCustomer().getEmail());
         }
         return new OrderRequestDTO(ordineRequest.getId(), ordineRequest.getTotal(), customerRequestDTO);
     }
@@ -39,6 +41,7 @@ public abstract class OrderMapper {
         CustomerEntity customerEntity = new CustomerEntity();
         if (request.getCustomer() != null) {
             customerEntity.setName(request.getCustomer().getName());
+            customerEntity.setEmail(request.getCustomer().getEmail());
             customerEntity.setId(request.getCustomer().getId());
         }
         OrderEntity orderEntity = new OrderEntity();
@@ -53,6 +56,7 @@ public abstract class OrderMapper {
         if (ordineEntity.getCustomer() != null) {
             customerResponse.setId(ordineEntity.getCustomer().getId());
             customerResponse.setName(ordineEntity.getCustomer().getName());
+            customerResponse.setEmail(ordineEntity.getCustomer().getEmail());
         }
         return new OrderResponse(ordineEntity.getId(), ordineEntity.getTotal(), customerResponse);
     }
@@ -62,6 +66,7 @@ public abstract class OrderMapper {
         if (orderEntity.getCustomer() != null) {
             customerResponseDTO.setId(orderEntity.getCustomer().getId());
             customerResponseDTO.setName(orderEntity.getCustomer().getName());
+            customerResponseDTO.setEmail(orderEntity.getCustomer().getEmail());
         }
         return new OrderResponseDTO(orderEntity.getId(), orderEntity.getTotal(), customerResponseDTO);
     }
@@ -71,6 +76,7 @@ public abstract class OrderMapper {
         if (orderRequestDTO.getCustomer() != null) {
             customerEntity.setId(orderRequestDTO.getCustomer().getId());
             customerEntity.setName(orderRequestDTO.getCustomer().getName());
+            customerEntity.setEmail(orderRequestDTO.getCustomer().getEmail());
         }
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setId(orderRequestDTO.getId());

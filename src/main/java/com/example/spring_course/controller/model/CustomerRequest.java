@@ -1,6 +1,7 @@
 package com.example.spring_course.controller.model;
 
-import com.example.spring_course.repository.model.OrderEntity;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,8 @@ public class CustomerRequest {
 
     private Long id;
     private String name;
+    @NotBlank
+    @Email
+    private String email;
     private List<OrderRequest> orders;
 }

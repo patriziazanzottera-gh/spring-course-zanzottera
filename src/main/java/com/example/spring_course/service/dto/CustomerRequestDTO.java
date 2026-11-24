@@ -12,10 +12,12 @@ public class CustomerRequestDTO {
 
     private Long id;
     private String name;
+    private String email;
     private List<OrderRequestDTO> orders;
 
-    public CustomerRequestDTO(Long id , String name) {
+    public CustomerRequestDTO(Long id , String name, String email) {
         this.id = id;
         this.name = name;
+        this.email = email;
     }
 }

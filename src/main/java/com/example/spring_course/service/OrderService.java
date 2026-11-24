@@ -36,40 +36,56 @@ public class OrderService {
         return mapper.entityToDTO(orderEntity);
     }
 
-    @CachePut(value="Order", key="#id")
-    public OrderResponse update(
-            Long id,
-            OrderRequest request) {
+    public OrderResponse getById(Long id) {
 
-        OrderEntity ordine = repository.findById(id)
+        OrderEntity order = repository.findById(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(
                                 NOT_FOUND,
-                                "Ordine not found: " +
+                                "Order not found: " +
+                                        id
+                        )
+                );
+
+        if (order.getCustomer() != null) {
+            Optional<CustomerEntity> customerEntity = customerRepository.findById(order.getCustomer().getId());
+            customerEntity.ifPresent(order::setCustomer);
+        }
+        order = repository.save(order);
+        return mapper.toResponse(order);
+    }
+
+    @CachePut(value="Order", key="#id")
+    public OrderResponse update(Long id, OrderRequest request) {
+
+        OrderEntity order = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                NOT_FOUND,
+                                "Order not found: " +
                                         id
                         )
                 );
         request.setId(id);
-        ordine = mapper.requestToEntity(request);
+        order = mapper.requestToEntity(request);
         if (request.getCustomer() != null) {
             Optional<CustomerEntity> customerEntity = customerRepository.findById(request.getCustomer().getId());
             if (customerEntity.isPresent()) {
-                ordine.setCustomer(customerEntity.get());
+                order.setCustomer(customerEntity.get());
             }
         }
-        ordine = repository.save(ordine);
-        return mapper.toResponse(ordine);
+        order = repository.save(order);
+        return mapper.toResponse(order);
     }
 
-    @CacheEvict(value="Ordine", key="#id")
+    @CacheEvict(value="Order", key="#id")
     public void delete(Long id) {
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(
                     NOT_FOUND,
-                    "Product not found: " + id
+                    "Order not found: " + id
             );
         }
         repository.deleteById(id);
     }
-
 }

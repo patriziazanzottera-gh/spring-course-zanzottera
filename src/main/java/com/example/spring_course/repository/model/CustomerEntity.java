@@ -19,6 +19,9 @@ public class CustomerEntity {
     @Column(name="name")
     private String name;
 
+    @Column(name="email")
+    private String email;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
 

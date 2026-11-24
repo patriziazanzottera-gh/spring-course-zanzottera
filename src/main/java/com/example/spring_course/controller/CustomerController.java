@@ -34,6 +34,7 @@ public class CustomerController {
 
     @PostMapping("/create")
     public ResponseEntity<CustomerResponse> createCustomer(@Valid @RequestBody CustomerRequest customerRequest) {
+
         CustomerResponseDTO customerResponseDTO = service.createCustomer(customerMapper.toRequestDTO(customerRequest));
         CustomerResponse userResponse = customerMapper.dtoToResponse(customerResponseDTO);
 
