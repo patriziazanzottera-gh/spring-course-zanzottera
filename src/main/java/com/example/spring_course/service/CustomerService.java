@@ -1,6 +1,9 @@
 package com.example.spring_course.service;
 
+import com.example.spring_course.controller.model.CustomerRequest;
 import com.example.spring_course.controller.model.CustomerResponse;
+import com.example.spring_course.controller.model.OrderRequest;
+import com.example.spring_course.controller.model.OrderResponse;
 import com.example.spring_course.exception.AppException;
 import com.example.spring_course.repository.CustomerRepository;
 import com.example.spring_course.repository.OrderRepository;
@@ -11,6 +14,7 @@ import com.example.spring_course.service.dto.CustomerResponseDTO;
 import com.example.spring_course.service.mapper.CustomerMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -79,6 +84,46 @@ public class CustomerService {
         }
         CustomerRequestDTO customerDTO = mapper.toDto(customerEntity);
         return mapper.toResponse(customerDTO);
+    }
+
+    public CustomerResponse update(Long id, CustomerRequest request) {
+
+        CustomerEntity customerEntity = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                NOT_FOUND,
+                                "Customer not found: " +
+                                        id
+                        )
+                );
+
+        List<OrderEntity> orders = request.getOrders().stream()
+                .map(orderRequest ->
+                        orderRepository.findById(orderRequest.getId())
+                                .orElseThrow(() ->
+                                        new RuntimeException("Order not found")
+                                )
+                )
+                .toList();
+
+
+        customerEntity.setName(request.getName());
+        customerEntity.setEmail(request.getEmail());
+        //customerEntity.setOrders(orders);
+        customerEntity = repository.save(customerEntity);
+
+        return mapper.entityToResponse(customerEntity);
+    }
+
+    @CacheEvict(value="Customer", key="#id")
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(
+                    NOT_FOUND,
+                    "Customer not found: " + id
+            );
+        }
+        repository.deleteById(id);
     }
 
 }

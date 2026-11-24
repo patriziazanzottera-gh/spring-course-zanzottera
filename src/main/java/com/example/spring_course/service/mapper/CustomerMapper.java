@@ -10,11 +10,13 @@ import com.example.spring_course.service.dto.CustomerRequestDTO;
 import com.example.spring_course.service.dto.CustomerResponseDTO;
 import com.example.spring_course.service.dto.OrderRequestDTO;
 import com.example.spring_course.service.dto.OrderResponseDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 public class CustomerMapper {
 
@@ -88,5 +90,20 @@ public class CustomerMapper {
                     }).toList();
         }
         return new CustomerResponseDTO(customerEntity.getId(), customerEntity.getName(), customerEntity.getEmail(),orders);
+    }
+
+    public CustomerResponse entityToResponse(CustomerEntity customerEntity) {
+        List<OrderResponse> orders = new ArrayList<>();
+        if (customerEntity.getOrders() != null && !customerEntity.getOrders().isEmpty()) {
+            orders = customerEntity.getOrders()
+                    .stream()
+                    .map(orderEntity -> {
+                        OrderResponse orderResponse = new OrderResponse();
+                        orderResponse.setId(orderEntity.getId());
+                        orderResponse.setTotal(orderEntity.getTotal());
+                        return orderResponse;
+                    }).toList();
+        }
+        return new CustomerResponse(customerEntity.getId(), customerEntity.getName(), customerEntity.getEmail(),orders);
     }
 }

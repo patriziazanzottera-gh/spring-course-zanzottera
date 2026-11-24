@@ -47,4 +47,16 @@ public class CustomerController {
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/{id}")
+    public CustomerResponse update(@PathVariable Long id, @Valid @RequestBody CustomerRequest request) {
+        return service.update(id, request);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+
+
 }
