@@ -1,5 +1,6 @@
 package com.example.spring_course.controller.model;
 
+import com.example.spring_course.repository.model.CustomerEntity;
 import com.example.spring_course.repository.model.OrderEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,4 +19,10 @@ public class OrderResponse {
 
     private Long id;
     private BigDecimal total;
+    private CustomerResponse customer;
+
+    public OrderResponse(Long id, BigDecimal total) {
+        this.id = id;
+        this.total = total;
+    }
 }

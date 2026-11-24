@@ -6,15 +6,15 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CustomerDTO {
+@AllArgsConstructor
+public class CustomerResponseDTO {
 
     private Long id;
     private String name;
-    private List<OrderDTO> orders;
+    private List<OrderResponseDTO> orders;
 
-    public CustomerDTO(Long id , String name) {
+    public CustomerResponseDTO(Long id , String name) {
         this.id = id;
         this.name = name;
     }

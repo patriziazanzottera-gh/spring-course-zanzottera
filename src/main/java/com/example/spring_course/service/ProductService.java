@@ -5,6 +5,7 @@ import com.example.spring_course.controller.model.ProductResponse;
 import com.example.spring_course.repository.ProductMongoRepository;
 import com.example.spring_course.repository.model.ProductDocument;
 import com.example.spring_course.service.mapper.ProductMongoMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,7 +27,6 @@ public ProductService(
     this.repository = repository;
     this.mapper = mapper;
 }
-
 
 public ProductResponse create(ProductRequest request) {
 
@@ -85,14 +85,11 @@ public void delete(String id) {
                 "Product not found: " + id
         );
     }
-
-
     repository.deleteById(id);
 }
 
 
 public List<ProductResponse> findByCategory(String category) {
-
 
     return repository.findByCategory(category)
             .stream()
@@ -103,10 +100,9 @@ public List<ProductResponse> findByCategory(String category) {
 
 public List<ProductResponse> searchByName(String name) {
 
-
     return repository.findByNameContainingIgnoreCase(name)
             .stream()
             .map(mapper::toResponse)
             .toList();
-}
+    }
 }
