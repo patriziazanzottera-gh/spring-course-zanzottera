@@ -2,107 +2,75 @@ package com.example.spring_course.service;
 
 import com.example.spring_course.controller.model.ProductRequest;
 import com.example.spring_course.controller.model.ProductResponse;
-import com.example.spring_course.repository.ProductMongoRepository;
-import com.example.spring_course.repository.model.ProductDocument;
-import com.example.spring_course.service.mapper.ProductMongoMapper;
+import com.example.spring_course.repository.ProductRepository;
+import com.example.spring_course.service.mapper.ProductMapper;
+import com.example.spring_course.repository.model.Product;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 
 @Service
 public class ProductService {
 
-private final ProductMongoRepository repository;
-private final ProductMongoMapper mapper;
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
-
-public ProductService(
-        ProductMongoRepository repository,
-        ProductMongoMapper mapper) {
-    this.repository = repository;
-    this.mapper = mapper;
-}
-
-public ProductResponse create(ProductRequest request) {
-
-    ProductDocument document = mapper.toDocument(request);
-    ProductDocument saved = repository.save(document);
-    return mapper.toResponse(saved);
-}
-
-public List<ProductResponse> findAll() {
-
-    return repository.findAll()
-            .stream()
-            .map(mapper::toResponse)
-            .toList();
-}
-
-public ProductResponse findById(String id) {
-
-    ProductDocument document = repository.findById(id)
-            .orElseThrow(() ->
-                    new ResponseStatusException(
-                            NOT_FOUND,
-                            "Product not found: " +
-                                    id
-                    )
-            );
-    return mapper.toResponse(document);
-}
-
-public ProductResponse update(
-        String id,
-        ProductRequest request) {
-
-    ProductDocument document = repository.findById(id)
-            .orElseThrow(() ->
-                    new ResponseStatusException(
-                            NOT_FOUND,
-                            "Product not found: " +
-                                    id
-                    )
-            );
-
-    document.setName(request.name());
-    document.setDescription(request.description());
-    document.setPrice(request.price());
-    document.setCategory(request.category());
-    ProductDocument updated = repository.save(document);
-    return mapper.toResponse(updated);
-}
-
-
-public void delete(String id) {
-    if (!repository.existsById(id)) {
-        throw new ResponseStatusException(
-                NOT_FOUND,
-                "Product not found: " + id
-        );
+    public ProductService(ProductRepository productRepository,
+                          ProductMapper productMapper) {
+        this.productRepository = productRepository;
+        this.productMapper = productMapper;
     }
-    repository.deleteById(id);
-}
 
+    @Transactional
+    public ProductResponse create(ProductRequest request) {
+        Product product = productMapper.toEntity(request);
 
-public List<ProductResponse> findByCategory(String category) {
+        Product savedProduct = productRepository.save(product);
 
-    return repository.findByCategory(category)
-            .stream()
-            .map(mapper::toResponse)
-            .toList();
-}
+        return productMapper.toResponse(savedProduct);
+    }
 
+    @Transactional(readOnly = true)
+    public List<ProductResponse> findAll() {
+        return productRepository.findAll()
+                .stream()
+                .map(productMapper::toResponse)
+                .toList();
+    }
 
-public List<ProductResponse> searchByName(String name) {
+    @Cacheable(value = "products", key = "#id")
+    @Transactional(readOnly = true)
+    public ProductResponse findById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
-    return repository.findByNameContainingIgnoreCase(name)
-            .stream()
-            .map(mapper::toResponse)
-            .toList();
+        return productMapper.toResponse(product);
+    }
+
+    @CachePut(value = "products", key = "#id")
+    @Transactional
+    public ProductResponse update(Long id, ProductRequest request) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+        product.setCategory(request.category());
+        product.setBrand(request.brand());
+
+        Product updatedProduct = productRepository.save(product);
+
+        return productMapper.toResponse(updatedProduct);
+    }
+
+    @CacheEvict(value = "products", key = "#id")
+    @Transactional
+    public void delete(Long id) {
+        productRepository.deleteById(id);
     }
 }

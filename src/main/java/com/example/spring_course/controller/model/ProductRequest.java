@@ -1,24 +1,24 @@
 package com.example.spring_course.controller.model;
 
-import com.example.spring_course.repository.model.Stato;
-import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Map;
 
-public record ProductRequest (
-    @NotBlank
-    String name,
-    String description,
-    @NotNull
-    @DecimalMin("0.01")
-    BigDecimal price,
-    @NotBlank
-    String category,
-    String brand,
-    Map<String, Object> technicalDetails
-){}
+public record ProductRequest(
+
+        @NotBlank
+        String name,
+
+        String description,
+
+        @NotNull
+        @DecimalMin("0.01")
+        BigDecimal price,
+
+        @NotBlank
+        String category,
+
+        String brand
+) {}

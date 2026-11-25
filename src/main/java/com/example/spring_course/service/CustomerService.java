@@ -108,6 +108,7 @@ public class CustomerService {
 
         customerEntity.setName(request.getName());
         customerEntity.setEmail(request.getEmail());
+        //non li salva
         //customerEntity.setOrders(orders);
         customerEntity = repository.save(customerEntity);
         return mapper.entityToResponse(customerEntity);
