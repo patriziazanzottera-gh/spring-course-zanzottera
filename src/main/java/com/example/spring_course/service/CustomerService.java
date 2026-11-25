@@ -14,6 +14,8 @@ import com.example.spring_course.service.dto.CustomerResponseDTO;
 import com.example.spring_course.service.mapper.CustomerMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -36,6 +38,7 @@ public class CustomerService {
     private final CustomerRepository repository;
     private final OrderRepository orderRepository;
     private final CustomerMapper mapper;
+    private final CacheManager cacheManager;
 
     public CustomerResponseDTO createCustomer(CustomerRequestDTO customerRequestDTO) {
         repository.findByEmail(customerRequestDTO.getEmail()).ifPresent(customer -> {
@@ -86,6 +89,8 @@ public class CustomerService {
         return mapper.toResponse(customerDTO);
     }
 
+    @Transactional
+    @CacheEvict(value = "customers", key = "#id")
     public CustomerResponse update(Long id, CustomerRequest request) {
 
         CustomerEntity customerEntity = repository.findById(id)
@@ -97,24 +102,40 @@ public class CustomerService {
                         )
                 );
 
-        List<OrderEntity> orders = request.getOrders().stream()
-                .map(orderRequest ->
-                        orderRepository.findById(orderRequest.getId())
-                                .orElseThrow(() ->
-                                        new RuntimeException("Order not found")
-                                )
-                )
-                .toList();
-
         customerEntity.setName(request.getName());
         customerEntity.setEmail(request.getEmail());
-        //non li salva
-        //customerEntity.setOrders(orders);
+
+        if (request.getOrders() != null) {
+            // Gli ordini passati vengono AGGIUNTI a quelli già associati (nessuno viene dissociato).
+            // OrderEntity è il lato proprietario della relazione (customer_id): va aggiornato order.customer
+            for (OrderRequest orderRequest : request.getOrders()) {
+                OrderEntity order = orderRepository.findById(orderRequest.getId())
+                        .orElseThrow(() -> new AppException(
+                                "Order " + orderRequest.getId() + " not found", HttpStatus.NOT_FOUND));
+
+                CustomerEntity previousCustomer = order.getCustomer();
+                if (previousCustomer != null) {
+                    if (previousCustomer.getId().equals(customerEntity.getId())) {
+                        continue; // già associato a questo customer
+                    }
+                    // l'ordine viene spostato: lo tolgo dal customer precedente e ne svuoto la cache
+                    previousCustomer.getOrders().remove(order);
+                    Cache cache = cacheManager.getCache("customers");
+                    if (cache != null) {
+                        cache.evict(previousCustomer.getId());
+                    }
+                }
+
+                order.setCustomer(customerEntity);
+                customerEntity.getOrders().add(order);
+            }
+        }
+
         customerEntity = repository.save(customerEntity);
         return mapper.entityToResponse(customerEntity);
     }
 
-    @CacheEvict(value="Customer", key="#id")
+    @CacheEvict(value = "customers", key = "#id")
     public void delete(Long id) {
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(

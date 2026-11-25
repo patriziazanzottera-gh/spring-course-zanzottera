@@ -22,7 +22,7 @@ public class CustomerEntity {
     @Column(name="email")
     private String email;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<OrderEntity> orders = new ArrayList<>();
 
 }

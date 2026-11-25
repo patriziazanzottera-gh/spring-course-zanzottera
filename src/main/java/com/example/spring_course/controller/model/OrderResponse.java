@@ -1,5 +1,6 @@
 package com.example.spring_course.controller.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.example.spring_course.repository.model.CustomerEntity;
 import com.example.spring_course.repository.model.OrderEntity;
 import jakarta.persistence.*;
@@ -19,6 +20,7 @@ public class OrderResponse {
 
     private Long id;
     private BigDecimal total;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private CustomerResponse customer;
 
     public OrderResponse(Long id, BigDecimal total) {
