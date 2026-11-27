@@ -28,6 +28,9 @@ public class Product {
 
     private String brand;
 
+    @Column(name = "external_code", length = 100)
+    private String externalCode;
+
 
     public Product(String name, String description,
                    BigDecimal price, String category, String brand) {
